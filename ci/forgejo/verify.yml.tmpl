@@ -1,0 +1,14 @@
+name: Verify
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  verify:
+    runs-on: "{{RUNNER_LABEL}}"
+    steps:
+      - name: Check out source
+        uses: "{{CHECKOUT_ACTION}}"
+      - name: Run repository checks
+        run: |
+          {{CHECK_COMMAND}}
