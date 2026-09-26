@@ -9,7 +9,8 @@ and runtime requirements; an adapter only calls them.
 What a repository verifies. Each is a documented command set for one kind of project:
 
 - [rust-library/](rust-library/README.md): standalone Cargo libraries, in three stages (fast
-  checks, MSRV check, release gate).
+  checks, MSRV check, release gate), with a release procedure payload that orders them around a
+  tag and a publication and keeps a record of what was tested.
 - [documentation/](documentation/README.md): an outline for Markdown repositories and sites,
   from which a repository picks the checks its formats need.
 

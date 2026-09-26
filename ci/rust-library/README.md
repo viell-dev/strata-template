@@ -1,8 +1,20 @@
 # Rust library verification recipe
 
-Commands for a standalone Cargo library, in three stages. Copy the applicable ones into the
-adopting repository's contributor guide or check script. The recipe supplies no toolchain file,
-MSRV policy, license, package metadata, or dependency list.
+Commands for a standalone Cargo library, in three stages, and a release procedure that orders them
+around a tag and a publication. Copy the applicable commands into the adopting repository's
+contributor guide or check script. The recipe supplies no toolchain file, MSRV policy, license,
+package metadata, or dependency list.
+
+## Files
+
+| Payload | Destination | Mode | Placeholders |
+| --- | --- | --- | --- |
+| `RELEASING.md.tmpl` | `RELEASING.md` | Filled | `{{PROJECT_NAME}}` |
+
+The payload is the maintainers' release procedure: the three stages below run from a clean
+worktree of the release commit, a record form, and the tag and publish steps. It is not meant for
+the package; contributors need only the fast checks, so put those in the contributor guide and
+link the procedure from there.
 
 ## Fast checks
 
@@ -21,11 +33,12 @@ Keep the doctest line: `--all-targets` does not include documentation tests.
 ## Minimum supported Rust version
 
 Check the minimum the crate declares in `Cargo.toml` (`rust-version`), not an ecosystem-wide
-constant, with a toolchain of that version installed:
+constant, with a toolchain of exactly that version installed:
 
 ```bash
 # Set to this crate's actual rust-version.
 msrv=1.87.0
+rustup toolchain install "$msrv" --profile minimal
 cargo +"$msrv" test --all-targets --all-features
 cargo +"$msrv" test --doc --all-features
 ```
@@ -38,16 +51,26 @@ or macOS.
 
 ## Release gate
 
-From a clean checkout of the release candidate, without `--allow-dirty`:
+From a fresh worktree of the release commit, with `git status --porcelain` printing nothing and
+without `--allow-dirty`:
 
 ```bash
 cargo package --list
 cargo package
+cat target/package/<name>-<version>/.cargo_vcs_info.json
+sha256sum target/package/<name>-<version>.crate
 # Then, inside target/package/<name>-<version>/:
 cargo test --all-features
 ```
 
 Inspect the listing for every file the README and licensing documents link to, and for tests,
-examples, or benchmarks that should ship. Testing the extracted copy confirms the published source
-is testable as shipped. Record the host, compiler versions, commands, and ignored tests for the
-exact release commit. The recipe ends here; it does not publish.
+examples, or benchmarks that should ship. `.cargo_vcs_info.json` names the commit the package was
+built from, not whether the tree was clean; it is the link from the published package to its
+source, and the reason the worktree must be fresh. Cargo builds the archive reproducibly, so the
+digest of the packaged file can be compared with the registry's checksum after publication.
+Testing the extracted copy confirms the published source is testable as shipped.
+
+Record the host, compiler versions, commands, results, and ignored tests for the exact release
+commit; the procedure payload has the form. The recipe ends at verification. The procedure adds
+the tag and `cargo publish` steps because they belong to the same commit, but it publishes nothing
+by itself and does not sign anything.
