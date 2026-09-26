@@ -11,8 +11,8 @@ package metadata, or dependency list.
 | --- | --- | --- | --- |
 | `RELEASING.md.tmpl` | `RELEASING.md` | Filled | `{{PROJECT_NAME}}` |
 
-The payload is the maintainers' release procedure: the three stages below run from a clean
-worktree of the release commit, a record form, and the tag and publish steps. It is not meant for
+The payload is the maintainers' release procedure: the three stages below run on a clean
+checkout of the release commit, a record form, and the tag and publish steps. It is not meant for
 the package; contributors need only the fast checks, so put those in the contributor guide and
 link the procedure from there.
 
@@ -51,26 +51,22 @@ or macOS.
 
 ## Release gate
 
-From a fresh worktree of the release commit, with `git status --porcelain` printing nothing and
+From a clean checkout of the release commit, with `git status --porcelain` printing nothing and
 without `--allow-dirty`:
 
 ```bash
 cargo package --list
 cargo package
-cat target/package/<name>-<version>/.cargo_vcs_info.json
-sha256sum target/package/<name>-<version>.crate
 # Then, inside target/package/<name>-<version>/:
 cargo test --all-features
 ```
 
 Inspect the listing for every file the README and licensing documents link to, and for tests,
-examples, or benchmarks that should ship. `.cargo_vcs_info.json` names the commit the package was
-built from, not whether the tree was clean; it is the link from the published package to its
-source, and the reason the worktree must be fresh. Cargo builds the archive reproducibly, so the
-digest of the packaged file can be compared with the registry's checksum after publication.
-Testing the extracted copy confirms the published source is testable as shipped.
+examples, or benchmarks that should ship. Testing the extracted copy confirms the published source
+is testable as shipped.
 
 Record the host, compiler versions, commands, results, and ignored tests for the exact release
-commit; the procedure payload has the form. The recipe ends at verification. The procedure adds
-the tag and `cargo publish` steps because they belong to the same commit, but it publishes nothing
-by itself and does not sign anything.
+commit; the procedure payload has the form. A passing CI run of the first two stages on that
+commit can stand in for repeating them. The recipe ends at verification. The procedure adds the
+tag and `cargo publish` steps because they belong to the same commit, but it publishes nothing by
+itself and does not sign anything.
