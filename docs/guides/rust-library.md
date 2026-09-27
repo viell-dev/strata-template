@@ -43,11 +43,10 @@ after copying.
 
 ## 4. Verification
 
-Put the fast checks from the Rust library recipe into the Development section or a
-repository-owned script, and copy `RELEASING.md.tmpl` to the crate root as `RELEASING.md` for the
-MSRV check, the release gate, and the tag and publish steps. Link the procedure from the
-Development section rather than repeating it. Add the Forgejo workflow only when a runner exists
-for the repository.
+Copy `RELEASING.md.tmpl` to the crate root as `RELEASING.md` and fill the project name. Put the
+fast checks from the Rust library recipe into the Development section or a repository-owned
+script, and link the procedure from there. Add the Forgejo workflow only when a runner exists for
+the repository.
 
 ## 5. Check the result
 
@@ -58,9 +57,9 @@ for the repository.
 - The example-material scope in `LICENSE-CLARIFICATION.md` (fenced code in Markdown and rustdoc,
   `examples/`, `tests/`, `benches/`) contains no third-party or differently licensed material, or
   each exception is marked as the clarification allows.
-- `cargo package --list` shows every file the README and clarification link to, and does not
-  list `RELEASING.md` or release records unless the crate chooses to ship them. Run
-  `cargo package`, then `cargo test --all-features` inside `target/package/<name>-<version>/`.
+- `cargo package --list` shows every file the README and clarification link to, and neither
+  `RELEASING.md` nor release records. Run `cargo package`, then `cargo test --all-features`
+  inside `target/package/<name>-<version>/`.
 
 ## 6. Record the selection
 
