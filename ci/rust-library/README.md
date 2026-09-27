@@ -62,5 +62,5 @@ The three stages together, run on the exact commit to be tagged, are the release
 payload is the maintainers' procedure around it: prepare the release commit, run the gate, tag
 and publish, and record the host, compiler versions, results, ignored tests, and package listing.
 A passing CI run of the first two stages on that commit may be cited instead of repeating them.
-Contributors need only the fast checks, so put those in the contributor guide and link the
-procedure from there.
+Contributors need only the fast checks, so put those in the contributor guide and link to
+`RELEASING.md` using its repository URL so the link also works from the published package.

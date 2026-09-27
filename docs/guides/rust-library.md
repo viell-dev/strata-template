@@ -45,8 +45,8 @@ after copying.
 
 Copy `RELEASING.md.tmpl` to the crate root as `RELEASING.md` and fill the project name. Put the
 fast checks from the Rust library recipe into the Development section or a repository-owned
-script, and link the procedure from there. Add the Forgejo workflow only when a runner exists for
-the repository.
+script, and link to `RELEASING.md` using its repository URL so the link also works from the
+published package. Add the Forgejo workflow only when a runner exists for the repository.
 
 ## 5. Check the result
 
