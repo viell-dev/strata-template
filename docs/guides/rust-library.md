@@ -46,7 +46,8 @@ after copying.
 Copy `RELEASING.md.tmpl` to the crate root as `RELEASING.md` and fill the project name. Put the
 fast checks from the Rust library recipe into the Development section or a repository-owned
 script, and link to `RELEASING.md` using its repository URL so the link also works from the
-published package. Add the Forgejo workflow only when a runner exists for the repository.
+published package. Add a CI workflow only when a runner exists for the repository; the
+[forgejo](../../ci/forgejo/README.md) adapter is the one provided so far.
 
 ## 5. Check the result
 
@@ -57,9 +58,9 @@ published package. Add the Forgejo workflow only when a runner exists for the re
 - The example-material scope in `LICENSE-CLARIFICATION.md` (fenced code in Markdown and rustdoc,
   `examples/`, `tests/`, `benches/`) contains no third-party or differently licensed material, or
   each exception is marked as the clarification allows.
-- `cargo package --list` shows every file the README and clarification link to, and neither
-  `RELEASING.md` nor release records. Run `cargo package`, then `cargo test --all-features`
-  inside `target/package/<name>-<version>/`.
+- `cargo package --list` shows every file the README and clarification link to, and not
+  `RELEASING.md`. Run `cargo package`, then `cargo test --all-features` inside
+  `target/package/<name>-<version>/`.
 
 ## 6. Record the selection
 

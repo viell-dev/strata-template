@@ -10,7 +10,7 @@ What a repository verifies. Each is a documented command set for one kind of pro
 
 - [rust-library/](rust-library/README.md): standalone Cargo libraries, in three stages (fast
   checks, MSRV check, package check), and a release procedure that runs them on the release
-  commit, tags, publishes, and records the results.
+  commit, then tags and publishes.
 - [documentation/](documentation/README.md): an outline for Markdown repositories and sites,
   from which a repository picks the checks its formats need.
 
