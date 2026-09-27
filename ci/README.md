@@ -22,8 +22,9 @@ How the repository's check command reaches a runner:
   label, checkout action, and check command.
 
 Recipes are documentation, not scripts. Put the applicable commands into the repository's
-contributor guide or its own check script, so they run identically with and without CI. Recipes
-end at verification and never publish anything; publication credentials stay out of check jobs.
+contributor guide or its own check script, so they run identically with and without CI.
+Verification commands do not publish; publication credentials stay out of check jobs. The Rust
+release procedure documents manual publication separately.
 
 TypeScript, Python, editor extensions, websites, containers, and mixed repositories will need
 their own recipes once a project establishes its package manager, supported runtime, and

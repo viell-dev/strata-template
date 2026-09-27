@@ -45,8 +45,7 @@ From a clean checkout, with `git status --porcelain` printing nothing and withou
 ```bash
 cargo package --list
 cargo package
-# Then, inside target/package/<name>-<version>/:
-cargo test --all-features
+(cd target/package/<name>-<version> && cargo test --all-features)
 ```
 
 Inspect the listing for every file the README and licensing documents link to, and for tests,
@@ -64,5 +63,4 @@ payload is the maintainers' procedure around it: prepare the release commit, run
 and publish, and record the host, compiler versions, results, ignored tests, and package listing.
 A passing CI run of the first two stages on that commit may be cited instead of repeating them.
 Contributors need only the fast checks, so put those in the contributor guide and link the
-procedure from there. Tagging and publishing are done by hand from the procedure; no check job
-publishes.
+procedure from there.
