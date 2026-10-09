@@ -52,6 +52,12 @@ Inspect the listing for every file the README and licensing documents link to, a
 examples, or benchmarks that should ship. Testing the extracted copy confirms the published source
 is testable as shipped.
 
+## Merge and release checks
+
+The fast checks are the merge checks: every change passes them before it is merged. The three
+stages together are the release checks, run on the commit to be tagged. CI can run either set;
+the [forgejo](../forgejo/README.md) adapter has a `rust-library-` workflow payload for each.
+
 ## Release procedure
 
 | Payload | Destination | Mode | Placeholders |

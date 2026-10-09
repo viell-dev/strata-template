@@ -22,11 +22,12 @@ There is no tooling yet, so check by hand:
 
 - Local documentation links resolve.
 - Each changed payload renders correctly: copy it to a temporary directory with representative
-  values, confirm no `{{` remains, and check its links relative to the intended destination.
+  values, confirm no placeholder remains (workflow `${{ … }}` expressions are not placeholders),
+  and check its links relative to the intended destination.
 - `LICENSE.tmpl` and `LICENSE-MIT-0.tmpl` still match their canonical texts, and the MIT-0 copies
   in both license variants are identical.
 - Executable recipes were run when their commands changed. Say which workflows have actually been
-  exercised on a runner; `ci/forgejo/verify.yml.tmpl` has not been.
+  exercised on a runner, and keep the verification status in `ci/forgejo/README.md` current.
 - Changes to the MPL/Rust contribution terms or the clarification follow
   [Maintenance](docs/maintenance.md): wording fixes are free, scope changes need an effective
   revision.

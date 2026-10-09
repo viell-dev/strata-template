@@ -1,8 +1,8 @@
 # Verification and CI
 
 Two kinds of component, kept separate: _recipes_ say what a repository verifies, and _adapters_
-connect a repository-owned check command to a runner. The adopting repository owns its commands
-and runtime requirements; an adapter only calls them.
+run those checks on a runner. The adopting repository owns its commands and runtime
+requirements; an adapter only runs them.
 
 ## Recipes
 
@@ -16,13 +16,15 @@ What a repository verifies. Each is a documented command set for one kind of pro
 
 ## Adapters
 
-How the repository's check command reaches a runner:
+How the repository's checks reach a runner:
 
-- [forgejo/](forgejo/README.md): a Forgejo Actions workflow with explicit inputs for the runner
-  label, checkout action, and check command.
+- [forgejo/](forgejo/README.md): Forgejo Actions workflows for merge checks on every pull request
+  and manually dispatched release checks, including a pair for the rust-library recipe.
 
 Recipes are documentation, not scripts. Put the applicable commands into the repository's
-contributor guide or its own check script, so they run identically with and without CI.
+contributor guide or its own check script, so they run identically with and without CI. A
+workflow either calls that script or repeats the documented commands; keep a repeated copy
+identical to the documentation.
 Verification commands do not publish; publication credentials stay out of check jobs. The Rust
 release procedure documents manual publication separately.
 

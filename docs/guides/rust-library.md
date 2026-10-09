@@ -47,13 +47,16 @@ the crate; the files are owned after copying.
 Copy `RELEASING.md.tmpl` to the crate root as `RELEASING.md` and fill the project name. Put the
 fast checks from the Rust library recipe into the Development section or a repository-owned
 script, and link to `RELEASING.md` using its repository URL so the link also works from the
-published package. Add a CI workflow only when a runner exists for the repository; the
-[forgejo](../../ci/forgejo/README.md) adapter is the one provided so far.
+published package. Add CI only when a runner exists for the repository. With Forgejo Actions,
+copy the [forgejo](../../ci/forgejo/README.md) adapter's `rust-library-` merge-check and
+release-check workflows, and keep their commands identical to the contributor guide and
+`RELEASING.md`.
 
 ## 5. Check the result
 
-- No `{{` remains in any copied file. Relative links in `README.md`, `CONTRIBUTING.md`, and
-  `LICENSE-CLARIFICATION.md` resolve, and the PR prompt's link renders in the forge's PR UI.
+- No placeholder remains in any copied file; the `${{ … }}` expressions in workflows are not
+  placeholders. Relative links in `README.md`, `CONTRIBUTING.md`, and `LICENSE-CLARIFICATION.md`
+  resolve, and the PR prompt's link renders in the forge's PR UI.
 - `LICENSE` and `LICENSE-CLARIFICATION.md` are byte-identical to their sources; `LICENSE-MIT-0`
   differs only on the notice line.
 - The example-material scope in `LICENSE-CLARIFICATION.md` (fenced code in Markdown and rustdoc,

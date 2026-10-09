@@ -31,7 +31,8 @@ Each concern directory has a `README.md` listing its variants. Each variant dire
   this repository's license, and a payload's downstream-relative links are not broken links here.
   Drop the suffix when copying.
 - **Placeholders look like `{{NAME}}`.** The vocabulary is listed below. A rendered file must
-  contain none of them.
+  contain none of them. Workflow expressions such as `${{ github.ref }}` are Forgejo syntax, not
+  placeholders.
 - **Every payload has an ownership mode**, stated in its variant's file table:
   - _Verbatim_: copied byte-for-byte and never edited downstream. An update replaces the file.
   - _Filled_: placeholders replaced, otherwise identical to the source. An update is re-rendered.
@@ -58,8 +59,8 @@ Each concern directory has a `README.md` listing its variants. Each variant dire
    and choose variants directly.
 2. Copy the selected payloads to the destinations in each file table, dropping `.tmpl`.
 3. Replace the placeholders and write the owned sections.
-4. Check the result in the destination repository: no `{{` left, relative links resolve, license
-   texts unchanged, plus whatever stack-specific checks the guide lists.
+4. Check the result in the destination repository: no placeholder left, relative links resolve,
+   license texts unchanged, plus whatever stack-specific checks the guide lists.
 5. Record what was adopted and from which revision, as described in
    [Maintenance](docs/maintenance.md).
 

@@ -1,27 +1,74 @@
-# Forgejo verification workflow
+# Forgejo verification workflows
 
-`verify.yml.tmpl` connects a repository-owned check command to a Forgejo Actions runner.
+Workflow payloads that run a repository's checks on a Forgejo Actions runner. They come in two
+kinds:
+
+- **Merge checks** run automatically on every pull request: the checks a change passes before it
+  is merged.
+- **Release checks** run only when a maintainer dispatches them: the slower checks a release
+  needs on the commit to be tagged.
 
 | Payload | Destination | Mode | Placeholders |
 | --- | --- | --- | --- |
-| `verify.yml.tmpl` | `.forgejo/workflows/verify.yml` | Filled, then owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` |
+| `merge-checks.yml.tmpl` | `.forgejo/workflows/merge-checks.yml` | Filled, then owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` |
+| `rust-library-merge-checks.yml.tmpl` | `.forgejo/workflows/merge-checks.yml` | Filled, then owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}` |
+| `rust-library-release-checks.yml.tmpl` | `.forgejo/workflows/release-checks.yml` | Filled, then owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{PROJECT_NAME}}` |
+
+A crate that follows the [rust-library](../rust-library/README.md) recipe takes the
+`rust-library-` pair: its merge checks are the recipe's fast checks, and its release checks run
+the recipe's three stages as separate jobs. The pair repeats the recipe's commands rather than
+calling a script, so keep each workflow identical to the contributor guide and `RELEASING.md`
+when either changes. Any other repository takes `merge-checks.yml.tmpl`, which runs one
+repository-owned check command; for a multiline command, indent every line under `run: |`.
 
 | Placeholder | Meaning |
 | --- | --- |
 | `{{RUNNER_LABEL}}` | Label served by a runner configured for this repository |
 | `{{CHECKOUT_ACTION}}` | Reviewed, fully qualified checkout action reference pinned to a commit |
 | `{{CHECK_COMMAND}}` | Repository-owned verification command, such as `./scripts/check.sh` |
+| `{{PROJECT_NAME}}` | The Cargo package name, which locates the extracted package |
 
-The workflow triggers on pushes to `main` and on pull requests; adjust the branch filter as
-needed. The runner environment must provide the project's tools and whatever runtime the chosen
-checkout action requires. No action reference, image, or runner is chosen for you. For a multiline
-check command, indent every line under `run: |`.
+The `${{ … }}` expressions in the payloads are Forgejo syntax, not placeholders; keep them.
 
-Before activation, configure isolation and pull-request authorization for that runner. Check jobs
-should not receive publication credentials or unrelated host access. Exercise successful and
-failing push and PR jobs before relying on their status or making them required checks.
+## Runner and repository setup
 
-The payload has been checked as rendered YAML; execution on a runner has not been verified. Its
-event and template syntax follow the
-[Forgejo Actions reference](https://forgejo.org/docs/latest/user/actions/reference/); validate it
-against the actual Codeberg instance and selected runner when adopting it.
+No runner, label, image, or action reference is chosen for you. The job image must provide
+Node.js and Git for the checkout action. The `rust-library-` payloads also need curl and a C
+linker: they install rustup in each job, then take the development compiler from
+`rust-toolchain.toml` and the minimum from `rust-version` in `Cargo.toml`. A Debian-based Node.js
+image such as `node:24-bookworm` provides all of these. For `merge-checks.yml.tmpl`, the image or
+the check command must provide the project's tools. Nothing is cached, so each job downloads its
+compilers.
+
+Before relying on the workflows, enable Actions in the repository settings and configure the
+runner's isolation. Check jobs should not receive publication credentials or unrelated host
+access. Forgejo holds workflows from fork pull requests by untrusted authors until a maintainer
+approves them.
+
+## Behavior
+
+- **Dispatching release checks.** Run them from the repository's Actions tab, or with the API,
+  for example `fj actions dispatch release-checks.yml <branch>`. Forgejo reads the workflow from
+  the ref being run, so a branch can use it only once it contains the file. The same applies to
+  pull requests: a branch from before the workflow was added gets no merge checks.
+- **Runner offline.** Jobs wait, and the pull request shows a pending check, until a runner with
+  the label connects; they then run without intervention. A job that waits longer than the
+  instance's abandoned-job timeout (24 hours by default) is cancelled, and a runner that
+  disappears mid-job fails it after about ten minutes. Rerun a finished run from its page with
+  "Re-run all jobs", or a single job with its rerun icon; this needs write access and the web UI.
+- **New pushes.** A new push to a pull request cancels its older merge-check run. The cancelled
+  run marks its commit with a failed status ("Has been cancelled"). The pull request shows only
+  its head commit, but a superseded commit merged as it is keeps that status in the history.
+- **Required checks.** A cancelled or abandoned run reports as a failure, and a check that never
+  ran blocks a merge that requires it. While a runner is not always online, keep merge checks
+  informational rather than required.
+
+## Verification status
+
+The `rust-library-` pair has run on Codeberg (Forgejo 16.0-dev) with Forgejo Runner 13.2.0 and
+`node:24-bookworm` jobs, adopted in strata-reader: passing runs of both workflows, an
+intentionally failing commit that failed each release-check job at its own stage, merge checks on
+a pull request, and a run cancelled by a newer push. `merge-checks.yml.tmpl` shares their trigger
+and concurrency settings but has not itself run. Event and expression syntax follow the
+[Forgejo Actions reference](https://forgejo.org/docs/latest/user/actions/reference/); validate a
+workflow against the actual instance and runner when adopting it.
