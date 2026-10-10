@@ -46,7 +46,7 @@ Each concern directory has a `README.md` listing its variants. Each variant dire
 | Placeholder | Meaning | Strata convention |
 | --- | --- | --- |
 | `{{PROJECT_NAME}}` | Package or repository name as users know it | For example `strata-reader` |
-| `{{REPO_URL}}` | Upstream repository URL | `https://codeberg.org/Devious-Concepts/<name>` |
+| `{{REPO_URL}}` | Upstream repository URL | `https://github.com/viell-dev/<name>` |
 | `{{YEAR}}` | Year of first publication, for license notices | The real year; never backdated |
 | `{{COPYRIGHT_HOLDER}}` | Name on license notices | `viell` |
 | `{{DEVELOPMENT}}` | Marks an owned Development section to be written | That repository's actual workflow |
