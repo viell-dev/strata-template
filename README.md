@@ -31,7 +31,7 @@ Each concern directory has a `README.md` listing its variants. Each variant dire
   this repository's license, and a payload's downstream-relative links are not broken links here.
   Drop the suffix when copying.
 - **Placeholders look like `{{NAME}}`.** The vocabulary is listed below. A rendered file must
-  contain none of them. Workflow expressions such as `${{ github.ref }}` are Forgejo syntax, not
+  contain none of them. Workflow expressions such as `${{ github.ref }}` are Actions expressions, not
   placeholders.
 - **Every payload has an ownership mode**, stated in its variant's file table:
   - _Verbatim_: copied byte-for-byte and never edited downstream. An update replaces the file.

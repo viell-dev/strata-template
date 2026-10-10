@@ -23,7 +23,7 @@ expression; only the example material carries the MIT-0 grant. If the package us
 ## 2. Contribution policy
 
 Copy `CONTRIBUTING.md` to the crate root and the PR prompt to the location the host reads, such
-as `.forgejo/pull_request_template.md`. Fill the project name and repository URL, then write the
+as `.github/pull_request_template.md`. Fill the project name and repository URL, then write the
 Development section. Cover at least:
 
 - **Compilers.** `rust-version` in `Cargo.toml` declares the minimum supported Rust version for
@@ -39,7 +39,7 @@ The Licensing section stays as written.
 ## 3. Issue prompts
 
 Copy `rust-library-bug.md.tmpl` and, if wanted, `proposal.md.tmpl` into the host's issue
-template directory, such as `.forgejo/issue_template/`, dropping `.tmpl`. Adjust the wording to
+template directory, such as `.github/ISSUE_TEMPLATE/`, dropping `.tmpl`. Adjust the wording to
 the crate; the files are owned after copying.
 
 ## 4. Verification

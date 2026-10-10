@@ -8,7 +8,7 @@ same MIT-0 terms, and contributors identify third-party material so its notices 
 | Payload | Destination | Mode | Placeholders |
 | --- | --- | --- | --- |
 | `CONTRIBUTING.md.tmpl` | `CONTRIBUTING.md` | Filled; everything but the Licensing section owned | `{{PROJECT_NAME}}`, `{{REPO_URL}}`, `{{DEVELOPMENT}}` |
-| `pull_request_template.md.tmpl` | `.forgejo/pull_request_template.md` | Filled, optional | `{{REPO_URL}}` |
+| `pull_request_template.md.tmpl` | `.github/pull_request_template.md` | Filled, optional | `{{REPO_URL}}` |
 
 ## Installation
 
@@ -18,6 +18,7 @@ same MIT-0 terms, and contributors identify third-party material so its notices 
    which belong in other repositories; a service will want deployment notes. Keep the Licensing
    section as written.
 3. Optionally copy the PR prompt. It links to the contribution guide by absolute URL because
-   relative links in PR bodies do not resolve reliably.
+   relative links in PR bodies do not resolve reliably. The payload uses GitHub
+   `blob/main`; adapt that path for another host.
 
 Nothing here assumes Cargo or any particular stack.

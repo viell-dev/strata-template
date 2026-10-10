@@ -11,15 +11,17 @@ sentence in each pull request description, which the PR prompt pre-fills.
 | Payload | Destination | Mode | Placeholders |
 | --- | --- | --- | --- |
 | `CONTRIBUTING.md.tmpl` | `CONTRIBUTING.md` | Filled; Development section owned | `{{PROJECT_NAME}}`, `{{REPO_URL}}`, `{{DEVELOPMENT}}` |
-| `pull_request_template.md.tmpl` | `.forgejo/pull_request_template.md` | Verbatim | None |
+| `pull_request_template.md.tmpl` | `.github/pull_request_template.md` | Filled | `{{REPO_URL}}` |
 
 The Licensing section stays as written; it is the text the assent sentence refers to. The assent
-sentence in the guide and in the PR prompt must stay identical. Forgejo also reads the PR prompt
-from `.gitea/`, `.github/`, or `docs/`; `.forgejo/` is the convention here.
+sentence in the guide and in the PR prompt must stay identical. Use `.github/` for GitHub;
+Forgejo also reads this location. The repository URL makes the contribution link resolve from
+the pull request body.
 
 ## Installation
 
-1. Copy both payloads, dropping `.tmpl`, and fill the project name and repository URL.
+1. Copy both payloads, dropping `.tmpl`, and fill the project name and repository URL. The PR
+   prompt uses the GitHub `blob/main` path; adapt that path when adopting it on another host.
 2. Write the Development section. For a Rust crate, cover:
    - the compilers: `rust-version` in `Cargo.toml` declares the minimum supported Rust version
      for that release, while `rust-toolchain.toml` selects the development compiler contributors
