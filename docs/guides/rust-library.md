@@ -9,7 +9,7 @@ authoritative; this guide only orders them and adds the cross-cutting checks.
 | 1 | [license](../../license/README.md) | [mpl-2.0-rust](../../license/mpl-2.0-rust/README.md) |
 | 2 | [contributing](../../contributing/README.md) | [mpl-2.0-rust](../../contributing/mpl-2.0-rust/README.md) |
 | 3 | [issues](../../issues/README.md) | `rust-library-bug`, optionally `proposal` |
-| 4 | [ci](../../ci/README.md) | [rust-library](../../ci/rust-library/README.md), optionally [forgejo](../../ci/forgejo/README.md) |
+| 4 | [ci](../../ci/README.md) | [rust-library](../../ci/rust-library/README.md), optionally [github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) |
 
 ## 1. License material
 
@@ -47,10 +47,10 @@ the crate; the files are owned after copying.
 Copy `RELEASING.md.tmpl` to the crate root as `RELEASING.md` and fill the project name. Put the
 fast checks from the Rust library recipe into the Development section or a repository-owned
 script, and link to `RELEASING.md` using its repository URL so the link also works from the
-published package. Add CI only when a runner exists for the repository. With Forgejo Actions,
-copy the [forgejo](../../ci/forgejo/README.md) adapter's `rust-library-` merge-check and
-release-check workflows, and keep their commands identical to the contributor guide and
-`RELEASING.md`.
+published package. Add CI only when a runner exists for the repository. Copy the
+[github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) adapter's
+`rust-library-` merge-check and release-check workflows, and keep their commands identical to
+the contributor guide and `RELEASING.md`.
 
 ## 5. Check the result
 

@@ -16,7 +16,7 @@ selecting MIT-0 does not select a build tool.
 license/        License texts and licensing statements      variants: mpl-2.0-rust, mit-0
 contributing/   Contribution policies and PR prompts        variants: mpl-2.0-rust, mit-0
 issues/         Issue prompts, selected file by file
-ci/             Verification recipes and a runner adapter   rust-library, documentation, forgejo
+ci/             Verification recipes and runner adapters    rust-library, documentation, github, forgejo
 docs/guides/    End-to-end checklists for common repository types
 docs/           maintenance.md: recording selections, applying updates, intended tooling
 ```
@@ -50,7 +50,7 @@ Each concern directory has a `README.md` listing its variants. Each variant dire
 | `{{YEAR}}` | Year of first publication, for license notices | The real year; never backdated |
 | `{{COPYRIGHT_HOLDER}}` | Name on license notices | `viell` |
 | `{{DEVELOPMENT}}` | Marks an owned Development section to be written | That repository's actual workflow |
-| `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` | CI adapter inputs | See [ci/forgejo](ci/forgejo/README.md) |
+| `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` | CI adapter inputs | See [ci/github](ci/github/README.md) and [ci/forgejo](ci/forgejo/README.md) |
 
 ## Adopting components
 

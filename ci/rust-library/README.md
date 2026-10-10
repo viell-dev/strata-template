@@ -56,7 +56,8 @@ is testable as shipped.
 
 The fast checks are the merge checks: every change passes them before it is merged. The three
 stages together are the release checks, run on the commit to be tagged. CI can run either set;
-the [forgejo](../forgejo/README.md) adapter has a `rust-library-` workflow payload for each.
+the [github](../github/README.md) and [forgejo](../forgejo/README.md) adapters each supply
+a `rust-library-` workflow payload for both.
 
 ## Release procedure
 
