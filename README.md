@@ -1,9 +1,9 @@
 # strata-template
 
 Reusable starting points for Strata repositories: license material, contribution policies, issue
-prompts, a label catalog, dependency update configuration, and verification recipes. A repository
-selects the parts it needs, copies them, fills in the documented placeholders, and owns the
-result.
+prompts, a label catalog, dependency update configuration, security-reporting instructions, and
+verification recipes. A repository selects the parts it needs, copies them, fills in the
+documented placeholders, and owns the result.
 
 Strata's core is a Rust parser stack, but the surrounding ecosystem may include editor extensions,
 TypeScript or Python projects, websites, services, and infrastructure tooling. Components are
@@ -19,6 +19,7 @@ contributing/   Contribution policies and PR prompts        variants: mpl-2.0-ru
 issues/         Issue prompts, selected file by file
 labels/         Shared issue and pull request label catalog
 dependencies/   Dependency update configuration             dependabot-rust-library
+security/       Private vulnerability-reporting policy     variants: github
 ci/             Verification recipes and runner adapters    rust-library, documentation, github, forgejo
 docs/guides/    End-to-end checklists for common repository types
 docs/           maintenance.md: recording selections, applying updates, intended tooling
@@ -53,6 +54,8 @@ Each concern directory has a `README.md` listing its variants. Each variant dire
 | `{{YEAR}}` | Year of first publication, for license notices | The real year; never backdated |
 | `{{COPYRIGHT_HOLDER}}` | Name on license notices | `viell` |
 | `{{DEVELOPMENT}}` | Marks an owned Development section to be written | That repository's actual workflow |
+| `{{SUPPORTED_VERSIONS}}` | Marks an owned security-support section to be written | The adopter's chosen releases or maintained branches |
+| `{{REPORT_HANDLING}}` | Marks an owned report-handling section to be written | The adopter's response expectations and fix announcements |
 | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` | CI adapter inputs | See [ci/github](ci/github/README.md) and [ci/forgejo](ci/forgejo/README.md) |
 
 ## Adopting components
@@ -74,9 +77,13 @@ adopter is out of date.
 
 ## Not included
 
-Security reporting, a code of conduct, changelog conventions, and toolchain pins are deliberately
-absent. Each needs a maintainer decision first (a monitored contact, an enforcement route, a
-support window) before a template would help. Add them as components once those decisions exist.
+A code of conduct, changelog conventions, and toolchain pins are deliberately absent. Each needs
+maintainer decisions first, such as an enforcement route or support window, before a template
+would help. Add them as components once those decisions exist.
+
+The optional [security-reporting component](security/README.md) provides a private reporting
+route, but adoption still requires a monitored destination and maintainer-chosen support and
+handling policies. It supplies no default commitments.
 
 ## Contributing and reuse
 

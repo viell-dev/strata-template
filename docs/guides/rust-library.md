@@ -12,6 +12,7 @@ authoritative; this guide only orders them and adds the cross-cutting checks.
 | 4 | [labels](../../labels/README.md) | catalog |
 | 5 | [ci](../../ci/README.md) | [rust-library](../../ci/rust-library/README.md), optionally [github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) |
 | 6 | [dependencies](../../dependencies/README.md) | `dependabot-rust-library`, on GitHub |
+| 7 | [security](../../security/README.md), optional | [github](../../security/github/README.md), after policy decisions |
 
 ## 1. License material
 
@@ -66,7 +67,15 @@ On GitHub, copy the Dependabot configuration to `.github/dependabot.yml` and ena
 alerts and security updates. It relies on the merge checks from step 5 to test each proposed
 update, and its README explains the MSRV check that Cargo updates still need before merging.
 
-## 7. Check the result
+## 7. Security reporting, when selected
+
+For a public GitHub repository, follow the
+[private-reporting component](../../security/github/README.md) after the maintainer chooses who
+handles reports, which versions receive fixes, and what handling and announcement policy applies.
+Enable and verify the private route before publishing the filled `SECURITY.md`. Link to it from
+owned contributor guidance or the README, using a repository URL if the file is not packaged.
+
+## 8. Check the result
 
 - No placeholder remains in any copied file; the `${{ … }}` expressions in workflows are not
   placeholders. Relative links in `README.md`, `CONTRIBUTING.md`, and `LICENSE-CLARIFICATION.md`
@@ -81,8 +90,10 @@ update, and its README explains the MSRV check that Cargo updates still need bef
   `target/package/<name>-<version>/`.
 - The live labels match `.github/labels.json`.
 - On GitHub, the Dependabot page lists all three ecosystems without a configuration error.
+- If security reporting was selected, its component's verification passes and the rendered
+  policy states the maintainer's actual support and handling decisions.
 
-## 8. Record the selection
+## 9. Record the selection
 
 Note the components, variants, source revision, and rendered values as described in
 [Maintenance](../maintenance.md).

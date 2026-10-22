@@ -10,6 +10,7 @@ Each step links to the component's own instructions, which stay authoritative.
 | 3 | [issues](../../issues/README.md) | `proposal` and `question`, optionally a customized `bug-report` |
 | 4 | [labels](../../labels/README.md) | catalog |
 | 5 | [ci](../../ci/README.md) | [documentation](../../ci/documentation/README.md) |
+| 6 | [security](../../security/README.md), optional | [github](../../security/github/README.md) if this repository receives reports |
 
 ## 1. License
 
@@ -42,13 +43,23 @@ repository; keep them anyway, so that every repository shares one catalog.
 Choose from the documentation outline: local links and assets, Markdown style, and external links
 checked separately. Record the commands in the Development section.
 
-## 6. Check the result
+## 6. Security reporting, when selected
+
+An ecosystem hub can link to the responsible repositories' security policies. If the hub itself
+receives reports, first agree who handles and routes them and what support and handling policy
+applies, then follow the [private-reporting component](../../security/github/README.md) for a
+public GitHub repository. State the scope of the central route explicitly; hosting documentation
+alone does not make the hub responsible for every package's reports.
+
+## 7. Check the result
 
 - No `{{` remains in any copied file, and relative links resolve.
 - `LICENSE` differs from its source only on the notice line.
 - The live labels match `.github/labels.json`.
+- If security reporting was selected, its component's verification passes and the policy and
+  linked reporting destinations match the agreed scope.
 
-## 7. Record the selection
+## 8. Record the selection
 
 Note the components, variants, source revision, and rendered values as described in
 [Maintenance](../maintenance.md).
