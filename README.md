@@ -13,20 +13,21 @@ selecting MIT-0 does not select a build tool.
 
 ## Layout
 
-```text
-license/        License texts and licensing statements      variants: mpl-2.0-rust, mit-0
-contributing/   Contribution policies and PR prompts        variants: mpl-2.0-rust, mit-0
-issues/         Issue prompts, selected file by file
-labels/         Shared issue and pull request label catalog
-dependencies/   Dependency update configuration             dependabot-rust-library
-security/       Private vulnerability-reporting policy     variants: github
-ci/             Verification recipes and runner adapters    rust-library, documentation, github, forgejo
-docs/guides/    End-to-end checklists for common repository types
-docs/           maintenance.md: recording selections, applying updates, intended tooling
-```
+| Directory | Purpose | Components or variants |
+| --- | --- | --- |
+| [license/](license/README.md) | License texts and licensing statements | `mpl-2.0-rust`, `mit-0` |
+| [contributing/](contributing/README.md) | Contribution policies and PR prompts | `mpl-2.0-rust`, `mit-0` |
+| [issues/](issues/README.md) | Issue prompts selected file by file | General and Rust bug reports, proposals, questions |
+| [labels/](labels/README.md) | Shared issue and pull request labels | Label catalog |
+| [dependencies/](dependencies/README.md) | Dependency update configuration | `dependabot-rust-library` |
+| [security/](security/README.md) | Private vulnerability-reporting policy | `github` |
+| [ci/](ci/README.md) | Verification recipes and runner adapters | `rust-library`, `documentation`, `github`, `forgejo` |
+| [docs/guides/](docs/guides/) | End-to-end adoption checklists | [Rust library](docs/guides/rust-library.md), [documentation repository](docs/guides/documentation.md) |
+| [docs/maintenance.md](docs/maintenance.md) | Selection records and updates | Ownership, source revisions, intended tooling |
 
-Each concern directory has a `README.md` listing its variants. Each variant directory has a
-`README.md` with a file table and instructions, next to the payload files themselves.
+Each concern has a `README.md` describing its available components. Concerns with named variants
+keep each variant's instructions beside its payloads; `issues/`, `labels/`, and `dependencies/`
+list their payloads directly in the concern README.
 
 ## Conventions
 
@@ -50,7 +51,7 @@ Each concern directory has a `README.md` listing its variants. Each variant dire
 | Placeholder | Meaning | Strata convention |
 | --- | --- | --- |
 | `{{PROJECT_NAME}}` | Package or repository name as users know it | For example `strata-reader` |
-| `{{REPO_URL}}` | Upstream repository URL | `https://github.com/viell-dev/<name>` |
+| `{{REPO_URL}}` | Upstream repository URL, without a trailing slash | `https://github.com/viell-dev/<name>` |
 | `{{YEAR}}` | Year of first publication, for license notices | The real year; never backdated |
 | `{{COPYRIGHT_HOLDER}}` | Name on license notices | `viell` |
 | `{{DEVELOPMENT}}` | Marks an owned Development section to be written | That repository's actual workflow |

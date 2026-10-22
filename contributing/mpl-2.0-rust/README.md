@@ -14,7 +14,8 @@ sentence in each pull request description, which the PR prompt pre-fills.
 | `pull_request_template.md.tmpl` | `.github/pull_request_template.md` | Filled | `{{REPO_URL}}` |
 
 The Licensing section stays as written; it is the text the assent sentence refers to. The assent
-sentence in the guide and in the PR prompt must stay identical. Use `.github/` for GitHub;
+sentence in the guide and in the PR prompt must have identical visible wording; the prompt adds
+Markdown link syntax around `CONTRIBUTING.md`. Use `.github/` for GitHub;
 Forgejo also reads this location. The repository URL makes the contribution link resolve from
 the pull request body.
 
@@ -30,8 +31,15 @@ the pull request body.
    - test layout and the commands to run, taken from the
      [Rust library recipe](../../ci/rust-library/README.md).
 3. Open or preview a pull request to confirm the prompt appears and its `CONTRIBUTING.md` link
-   renders in the forge's PR UI. If the relative link does not resolve there, switch it to the
-   absolute repository URL and treat the prompt as owned.
+   reaches the destination repository and branch in the forge's PR UI.
+
+## Verification
+
+- No placeholder remains, and the Development section describes the actual checks.
+- Outside that owned section, the contribution guide matches the filled payload.
+- The assent has the same visible wording in the guide and prompt, and the prompt's absolute link
+  reaches the installed guide.
+- `LICENSE`, `LICENSE-MIT-0`, and `LICENSE-CLARIFICATION.md` are installed and their links resolve.
 
 ## Maintenance
 

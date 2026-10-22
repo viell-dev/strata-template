@@ -22,3 +22,10 @@ same MIT-0 terms, and contributors identify third-party material so its notices 
    `blob/main`; adapt that path for another host.
 
 Nothing here assumes Cargo or any particular stack.
+
+## Verification
+
+- No placeholder remains, and the owned Development section describes the actual checks.
+- The Licensing section is unchanged and links to the selected MIT-0 license file.
+- If installed, preview the PR prompt and confirm its absolute contribution-guide link reaches the
+  destination repository and branch.

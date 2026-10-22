@@ -53,7 +53,8 @@ alone does not make the hub responsible for every package's reports.
 
 ## 7. Check the result
 
-- No `{{` remains in any copied file, and relative links resolve.
+- No template placeholder remains in any copied file, and relative links resolve. Workflow
+  `${{ … }}` expressions are host syntax, not template placeholders.
 - `LICENSE` differs from its source only on the notice line.
 - The live labels match `.github/labels.json`.
 - If security reporting was selected, its component's verification passes and the policy and

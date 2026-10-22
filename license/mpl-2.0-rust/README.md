@@ -51,6 +51,9 @@ make the adopter's contribution terms diverge from the published statement.
   the clarification allows ("except where a file or an individual fenced block expressly states
   otherwise").
 - **Package contents.** `cargo package --list` must show every file the README and clarification
-  link to. Run `cargo package`, then `cargo test --all-features` from the extracted copy in
-  `target/package/<name>-<version>/`, so the published source is testable as shipped.
+  link to. Follow the [Rust package checks](../../ci/rust-library/README.md#package): run
+  `cargo package`, then `cargo test --all-targets --all-features` and
+  `cargo test --doc --all-features` from the extracted copy in
+  `target/package/<name>-<version>/`. This checks shipped targets, including benchmarks, and
+  doctests separately.
 - **Rendering.** Check the README section and its links in the adopting repository.
