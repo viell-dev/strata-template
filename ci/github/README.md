@@ -1,14 +1,35 @@
 # GitHub verification workflows
 
-Workflow payloads for the [Rust library recipe](../rust-library/README.md). Merge checks run
-its fast checks on every pull request's head commit. Release checks run all three stages as
-separate jobs, only when a maintainer dispatches them. Keep their commands identical to the
-adopting repository's `CONTRIBUTING.md` and `RELEASING.md`.
+Workflow payloads that run an adopting repository's checks on GitHub Actions. Choose the generic
+merge-check adapter for an owned command, or the pair for the
+[Rust library recipe](../rust-library/README.md). All merge checks run on the pull request's head
+commit; the Rust release checks run all three stages as separate jobs on manual dispatch. Keep
+the commands identical to the adopting repository's contributor and release instructions.
 
 | Payload | Destination | Mode | Placeholders |
 | --- | --- | --- | --- |
+| `merge-checks.yml.tmpl` | `.github/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` |
 | `rust-library-merge-checks.yml.tmpl` | `.github/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}` |
 | `rust-library-release-checks.yml.tmpl` | `.github/workflows/release-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{PROJECT_NAME}}` |
+
+## Generic repository checks
+
+Copy `merge-checks.yml.tmpl` when the repository has its own verification command, for example
+`python3 scripts/check.py`. Fill the runner label, a reviewed full-SHA checkout action reference,
+and `{{CHECK_COMMAND}}`. For a multiline command, indent every substituted line to the same level
+as the original placeholder under `run: |`.
+
+The runner needs Bash, Git, and the Node.js version required by the checkout action. The runner
+image or owned command supplies every other tool; this adapter installs no language toolchain.
+Its explicit Bash shell fails on pipeline errors. The command's exit status determines the check
+result, and a new push cancels the older run for that PR. Adjust the owned timeout if needed.
+
+Choose one merge-check payload for a destination workflow, not both. See the
+[documentation guide](../../docs/guides/documentation.md) for one non-Rust use case.
+
+## Rust library checks
+
+The following setup applies to the `rust-library-` pair.
 
 Use a Linux runner label such as `ubuntu-latest` and a reviewed checkout action pinned to its
 full commit hash. Substitute only `actions/checkout@<commit>` for `{{CHECKOUT_ACTION}}`;
@@ -86,6 +107,10 @@ a successful run on the earlier PR head is not enough.
 
 Validate the filled workflows on the adopting repository and runner. Check that each run uses
 the intended SHA and that all documented stages pass before relying on its results.
+
+The generic adapter's rendered command has been checked locally with a multiline success case,
+a failing command, and a failing pipeline. Its event and cancellation behavior has not yet been
+exercised on a GitHub runner.
 
 Metadata selection, extracted-package tests, and fail-fast download behavior have been checked
 locally with positive and negative fixtures. The revised workflow has not yet run on a GitHub

@@ -18,8 +18,8 @@ What a repository verifies. Each is a documented command set for one kind of pro
 
 How the repository's checks reach a runner:
 
-- [github/](github/README.md): GitHub Actions workflows for Rust library merge checks and
-  manually dispatched release checks.
+- [github/](github/README.md): GitHub Actions merge checks for an owned command, plus a Rust
+  library pair with fast merge checks and manually dispatched release checks.
 - [forgejo/](forgejo/README.md): Forgejo Actions workflows for merge checks on every pull request
   and manually dispatched release checks, including a pair for the rust-library recipe.
 
