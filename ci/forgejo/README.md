@@ -49,6 +49,17 @@ runner's isolation. Check jobs should not receive publication credentials or unr
 access. Forgejo holds workflows from fork pull requests by untrusted authors until a maintainer
 approves them.
 
+### Rustup bootstrap
+
+The Rust payloads deliberately use Rust's
+[standard Unix installer](https://rust-lang.github.io/rustup/installation/other.html) over HTTPS.
+The bootstrap script and installer are not pinned; they are trusted upstream inputs even when
+the checkout action and compiler version are pinned. This choice avoids maintaining a separate
+installer version and checksum in the templates, but does not provide a frozen build environment.
+An adopter that needs a pinned bootstrap can use the documented versioned `rustup-init` download
+and verify a reviewed checksum in its owned workflows. Keep the runner isolation and credential
+limits above in either case; those limits do not remove the need to trust the installer.
+
 ## Behavior
 
 - **Dispatching release checks.** Run them from the repository's Actions tab, or with the API,
