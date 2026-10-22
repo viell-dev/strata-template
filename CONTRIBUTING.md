@@ -7,7 +7,7 @@ contribution policy that requires particular license files, in the component's R
 
 ## Conventions
 
-- Payloads end in `.tmpl`; everything else is this repository's own documentation.
+- Payloads end in `.tmpl`; other files document, configure, or validate this repository.
 - Placeholders use the `{{NAME}}` vocabulary in the [README](README.md). Add a name only when no
   existing one fits, and add it to that table.
 - Every variant README has a file table with destination, ownership mode, and placeholders,
@@ -18,9 +18,15 @@ contribution policy that requires particular license files, in the component's R
 
 ## Checks before submitting
 
-There is no tooling yet, so check by hand:
+Run the [catalog checks](scripts/README.md), including the validator's regression tests. CI runs
+those commands with actionlint on pull requests and pushes to `main`. The checker covers local
+Markdown links, rendered fixtures, license integrity, labels, and basic workflow invariants; its
+README distinguishes optional actionlint coverage from runner execution.
 
-- Local documentation links resolve.
+Also review the checks that require judgment or an actual adopter/runner:
+
+- Preview changed Markdown where presentation matters, and check external links separately from
+  deterministic local checks.
 - Each changed payload renders correctly: copy it to a temporary directory with representative
   values, confirm no placeholder remains (workflow `${{ … }}` expressions are not placeholders),
   and check its links relative to the intended destination.

@@ -46,12 +46,13 @@ scope-change requirements below when those terms are affected.
 
 ## Tooling
 
-No tool exists yet. The intended one lives in this repository and applies or updates selected
-components against a repository that is compatible with the template: its adopted files are
-verbatim or filled copies, with owned material confined to the sections the file tables mark as
-owned. Such a tool takes the recorded selection as input, renders filled files from the recorded
-values, produces reviewable diffs for an explicit list of repositories, reports leftover
-placeholders, and stops on conflicts. It never commits or publishes.
+The [catalog checker](../scripts/README.md) validates this repository's source and rendered
+fixtures. No adoption/update tool exists yet. The intended one lives in this repository and applies
+or updates selected components against a repository that is compatible with the template: its
+adopted files are verbatim or filled copies, with owned material confined to the sections the file
+tables mark as owned. Such a tool takes the recorded selection as input, renders filled files from
+the recorded values, produces reviewable diffs for an explicit list of repositories, reports
+leftover placeholders, and stops on conflicts. It never commits or publishes.
 
 A repository customized beyond that, with recorded ownership changes or restructured files, is
 outside the tool's automatic update scope and maintains its own checks. That is a valid state, not a

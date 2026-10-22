@@ -1,0 +1,14 @@
+{
+  "license/mpl-2.0-rust/LICENSE.tmpl": {
+    "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04",
+    "source": "https://www.mozilla.org/media/MPL/2.0/index.txt"
+  },
+  "license/mit-0/LICENSE.tmpl": {
+    "sha256": "1dc131b7f38a760d7cafd0c121ec7bd899127d4ebb4016e61f14582825e6b8cd",
+    "source": "https://raw.githubusercontent.com/spdx/license-list-data/main/text/MIT-0.txt"
+  },
+  "license/mpl-2.0-rust/LICENSE-MIT-0.tmpl": {
+    "sha256": "1dc131b7f38a760d7cafd0c121ec7bd899127d4ebb4016e61f14582825e6b8cd",
+    "source": "https://raw.githubusercontent.com/spdx/license-list-data/main/text/MIT-0.txt"
+  }
+}
