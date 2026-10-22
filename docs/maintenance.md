@@ -14,6 +14,7 @@ For each adopted component, record enough to find its source again:
 | issues | `rust-library-bug`, `proposal` | `abc1234` | `.github/ISSUE_TEMPLATE/` | Owned |
 | labels | catalog | `abc1234` | `.github/labels.json` | Verbatim |
 | dependencies | `dependabot-rust-library` | `abc1234` | `.github/dependabot.yml` | Owned |
+| security | github | `abc1234` | `SECURITY.md` | Filled; Supported versions and Handling reports owned |
 
 Add the rendered placeholder values and any deliberate deviation from the source. Keep the note
 wherever the repository keeps its maintainer notes; it does not need to be published. A
