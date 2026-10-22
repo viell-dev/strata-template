@@ -8,7 +8,7 @@ authoritative; this guide only orders them and adds the cross-cutting checks.
 | --- | --- | --- |
 | 1 | [license](../../license/README.md) | [mpl-2.0-rust](../../license/mpl-2.0-rust/README.md) |
 | 2 | [contributing](../../contributing/README.md) | [mpl-2.0-rust](../../contributing/mpl-2.0-rust/README.md) |
-| 3 | [issues](../../issues/README.md) | `rust-library-bug`, optionally `proposal` |
+| 3 | [issues](../../issues/README.md) | `rust-library-bug`, optionally `proposal` and `question` |
 | 4 | [labels](../../labels/README.md) | catalog |
 | 5 | [ci](../../ci/README.md) | [rust-library](../../ci/rust-library/README.md), optionally [github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) |
 
@@ -39,9 +39,9 @@ The Licensing section stays as written.
 
 ## 3. Issue prompts
 
-Copy `rust-library-bug.md.tmpl` and, if wanted, `proposal.md.tmpl` into the host's issue
-template directory, such as `.github/ISSUE_TEMPLATE/`, dropping `.tmpl`. Adjust the wording to
-the crate; the files are owned after copying.
+Copy `rust-library-bug.md.tmpl` and, if wanted, `proposal.md.tmpl` and `question.md.tmpl` into
+the host's issue template directory, such as `.github/ISSUE_TEMPLATE/`, dropping `.tmpl`. Adjust
+the wording to the crate; the files are owned after copying.
 
 ## 4. Labels
 
