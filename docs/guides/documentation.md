@@ -7,7 +7,7 @@ Each step links to the component's own instructions, which stay authoritative.
 | --- | --- | --- |
 | 1 | [license](../../license/README.md) | [mit-0](../../license/mit-0/README.md) |
 | 2 | [contributing](../../contributing/README.md) | [mit-0](../../contributing/mit-0/README.md) |
-| 3 | [issues](../../issues/README.md) | `proposal`, optionally a customized `bug-report` |
+| 3 | [issues](../../issues/README.md) | `proposal` and `question`, optionally a customized `bug-report` |
 | 4 | [labels](../../labels/README.md) | catalog |
 | 5 | [ci](../../ci/README.md) | [documentation](../../ci/documentation/README.md) |
 
@@ -27,9 +27,9 @@ if used.
 
 ## 3. Issue prompts
 
-The proposal prompt fits questions and suggestions. A bug-report prompt is for rendering or link
-problems; adjust its environment question or omit it. Keep an unstructured path for questions
-that fit no form.
+The question and proposal prompts fit questions and suggestions. A bug-report prompt is for
+rendering or link problems; adjust its environment question or omit it. Keep an unstructured path
+for questions that fit no form.
 
 ## 4. Labels
 
