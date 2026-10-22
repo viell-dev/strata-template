@@ -1,9 +1,13 @@
 # Issue prompts
 
 Individually selectable Markdown prompts with front matter for GitHub and Forgejo. Copy the chosen
-files into `.github/ISSUE_TEMPLATE/`, dropping `.tmpl`. They need no labels and contain no
-placeholders.
-Each is _owned_ after copying, so adapt the wording to the repository.
+files into `.github/ISSUE_TEMPLATE/`, dropping `.tmpl`. They contain no placeholders. Each is
+_owned_ after copying, so adapt the wording to the repository.
+
+The bug prompts apply `Type: Bug` from the [label catalog](../labels/README.md). A forge ignores a
+label the repository does not define, so adopt the catalog with them or remove the `labels` line.
+The proposal prompt applies no label: whether a proposal is a feature, an enhancement, or a design
+question is decided during triage.
 
 | Payload | Asks for | Suited to |
 | --- | --- | --- |

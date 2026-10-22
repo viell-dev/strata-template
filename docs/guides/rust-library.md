@@ -9,7 +9,8 @@ authoritative; this guide only orders them and adds the cross-cutting checks.
 | 1 | [license](../../license/README.md) | [mpl-2.0-rust](../../license/mpl-2.0-rust/README.md) |
 | 2 | [contributing](../../contributing/README.md) | [mpl-2.0-rust](../../contributing/mpl-2.0-rust/README.md) |
 | 3 | [issues](../../issues/README.md) | `rust-library-bug`, optionally `proposal` |
-| 4 | [ci](../../ci/README.md) | [rust-library](../../ci/rust-library/README.md), optionally [github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) |
+| 4 | [labels](../../labels/README.md) | catalog |
+| 5 | [ci](../../ci/README.md) | [rust-library](../../ci/rust-library/README.md), optionally [github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) |
 
 ## 1. License material
 
@@ -32,7 +33,7 @@ Development section. Cover at least:
 - **Lints and conventions.** Where lints are configured and any house rules, such as preferring
   `#[expect(lint, reason = "...")]` over `#[allow(lint)]`.
 - **Tests.** Where unit, integration, and doc tests live, and the commands to run them, taken
-  from the recipe in step 4.
+  from the recipe in step 5.
 
 The Licensing section stays as written.
 
@@ -42,7 +43,13 @@ Copy `rust-library-bug.md.tmpl` and, if wanted, `proposal.md.tmpl` into the host
 template directory, such as `.github/ISSUE_TEMPLATE/`, dropping `.tmpl`. Adjust the wording to
 the crate; the files are owned after copying.
 
-## 4. Verification
+## 4. Labels
+
+Copy the label catalog to `.github/labels.json`, rename GitHub's default labels, and sync the rest
+as the labels README describes. Re-label existing issues and pull requests so that each has one
+`Type:` label.
+
+## 5. Verification
 
 Copy `RELEASING.md.tmpl` to the crate root as `RELEASING.md` and fill the project name. Put the
 fast checks from the Rust library recipe into the Development section or a repository-owned
@@ -52,7 +59,7 @@ published package. Add CI only when a runner exists for the repository. Copy the
 `rust-library-` merge-check and release-check workflows, and keep their commands identical to
 the contributor guide and `RELEASING.md`.
 
-## 5. Check the result
+## 6. Check the result
 
 - No placeholder remains in any copied file; the `${{ … }}` expressions in workflows are not
   placeholders. Relative links in `README.md`, `CONTRIBUTING.md`, and `LICENSE-CLARIFICATION.md`
@@ -65,8 +72,9 @@ the contributor guide and `RELEASING.md`.
 - `cargo package --list` shows every file the README and clarification link to, and not
   `RELEASING.md`. Run `cargo package`, then `cargo test --all-features` inside
   `target/package/<name>-<version>/`.
+- The live labels match `.github/labels.json`.
 
-## 6. Record the selection
+## 7. Record the selection
 
 Note the components, variants, source revision, and rendered values as described in
 [Maintenance](../maintenance.md).

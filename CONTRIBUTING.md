@@ -26,6 +26,8 @@ There is no tooling yet, so check by hand:
   and check its links relative to the intended destination.
 - `LICENSE.tmpl` and `LICENSE-MIT-0.tmpl` still match their canonical texts, and the MIT-0 copies
   in both license variants are identical.
+- The label catalog parses as JSON, each color is six lowercase hexadecimal digits, each
+  description fits GitHub's 100-character limit, and the labels README covers every label.
 - Executable recipes were run when their commands changed. Say which workflows have actually been
   exercised on a runner, and keep the verification status in `ci/forgejo/README.md` current.
 - Changes to the MPL/Rust contribution terms or the clarification follow
