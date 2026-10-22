@@ -33,8 +33,10 @@ Development section. Cover at least:
   default. The two differ, may differ from other crates, and change independently.
 - **Lints and conventions.** Where lints are configured and any house rules, such as preferring
   `#[expect(lint, reason = "...")]` over `#[allow(lint)]`.
-- **Tests.** Where unit, integration, and doc tests live, and the commands to run them, taken
-  from the recipe in step 5.
+- **Tests, examples, and benchmarks.** Where each lives, where present, how to run them, and
+  which ship in the package. Take verification commands from step 5; distinguish benchmark smoke
+  checks under `cargo test --all-targets` from measurements with `cargo bench`, and link to any
+  repository-owned methodology and results. Keep the separate doctest command.
 
 The Licensing section stays as written.
 
