@@ -9,11 +9,13 @@ For contributor checks, see [CONTRIBUTING.md](CONTRIBUTING.md).
 In a pull request, as for any other change:
 
 - Set `version` in `Cargo.toml`. If the release needs a newer compiler, raise `rust-version` too
-  and note it in the changelog and the README.
+  and note it in the release notes and the README.
 - If `Cargo.lock` is tracked, run `cargo update --workspace` and include its changes in the
   release commit.
-- Give the changelog entry its version, date, and link.
-- Add anything new that should ship to the `include` list in `Cargo.toml`.
+- Prepare the release notes. If the repository keeps a changelog, give its entry the version,
+  date, and link.
+- Review which files should ship. If `Cargo.toml` uses an explicit `include` list, add any new
+  required files to it; otherwise check Cargo's default selection and any `exclude` patterns.
 
 ## 2. Run the gate
 
@@ -61,20 +63,29 @@ cargo package
 )
 ```
 
-The listing must contain every file the README, changelog, and licensing documents link to, and
-every test, example, or benchmark meant to ship. If it does not, fix the `include` list in a new
-commit and run the gate again. The tests in the extracted copy show that the published source is
+The listing must contain every repository-local file the packaged README, licensing documents,
+and any packaged changelog link to, plus every test, example, or benchmark meant to ship. If it
+does not, correct the package selection in a new commit and run the gate again. The tests in the extracted copy show that the published source is
 testable as shipped, including its benchmark targets. The separate doctest command is required
 because `--all-targets` does not include documentation tests.
 
 Report the results in the pull request description: the commit, the host, the compiler versions,
-the test counts per stage, and every ignored test with its reason. Then merge with a
-fast-forward, so that the gated commit is the one that reaches `main`. A rebase after the gate
-produces a new commit; gate that one instead.
+the test counts per stage, and every ignored test with its reason.
 
-## 3. Tag and publish
+## 3. Merge and verify the final commit
 
-From the repository root, on the gated commit:
+Complete the repository's review requirements and merge using a permitted method. A true
+fast-forward preserves the gated commit; GitHub's Rebase and merge creates new commit SHAs, as do
+squash and merge-commit operations. Do not bypass branch protection to preserve a SHA.
+
+Check out the resulting commit on `main` and compare its full SHA with the gated SHA. If it
+changed, rerun all three stages of the gate on that resulting commit and record the new SHA and
+results on the release pull request. If a stage fails, fix the problem through a new pull request
+and repeat this process. A gate on an earlier PR head does not verify the merged commit.
+
+## 4. Tag and publish
+
+From a clean repository root, on the exact final commit verified above:
 
 ```bash
 git tag <version>
@@ -86,5 +97,5 @@ Tags are the bare version, without a `v` prefix. Then:
 
 - Check that the registry shows the intended version, README, license, and `rust-version`, and
   that docs.rs builds it.
-- Create the forge release from the tag with the changelog entry as its body.
+- Create the forge release from the tag with the prepared release notes as its body.
 - Update anything that reports release status, such as an ecosystem hub, in its own repository.

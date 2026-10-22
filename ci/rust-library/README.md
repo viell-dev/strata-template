@@ -46,7 +46,29 @@ cargo test --doc --all-features
 RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
 ```
 
-Keep the doctest line: `--all-targets` does not include documentation tests.
+Keep the doctest line: `--all-targets` does not include documentation tests. The development
+toolchain needs the `rustfmt` and `clippy` components; list them in `rust-toolchain.toml` or install
+them explicitly when setting up the compiler.
+
+### Feature configurations
+
+`--all-features` tests one configuration with every feature enabled. It does not exercise code
+behind `cfg(not(feature = "..."))`; such a path can fail for ordinary default-feature users while
+the all-features run passes. Mutually exclusive features can also make all-features invalid.
+
+When features exist, choose and record the supported configurations in the contributor guide:
+
+- Default features, using the test commands without `--all-features`.
+- `--no-default-features`, only if that configuration is supported. It does not itself mean
+  `no_std` support.
+- Relevant `--features <names>` combinations, with or without defaults as appropriate.
+- `--all-features` when enabling everything is a supported configuration.
+
+Apply that selection consistently to the development compiler, declared minimum, and extracted
+package checks, and to relevant Clippy and documentation checks. Keep separate doctests for each
+supported test configuration. The simple commands here suit a crate whose combined features are
+valid; replace or extend them in owned instructions and workflows when that is insufficient.
+There is no requirement to test every possible combination.
 
 ## Minimum supported Rust version
 
@@ -157,8 +179,11 @@ aligned with the contributor guide and workflows.
 
 The three stages together, run on the exact commit to be tagged, are the release gate. The
 payload is the maintainers' procedure around it: prepare the release commit in a pull request,
-run the gate on its head commit, report the host, compiler versions, results, and ignored tests
-in the pull request, merge with a fast-forward, then tag and publish. A passing CI run of the
-first two stages on that commit may be cited instead of repeating them.
+run the gate on its head commit, and report the host, compiler versions, results, and ignored
+tests in the pull request. After the permitted merge operation, compare the resulting commit with
+the gated one. If it changed, rerun all three stages on the resulting commit before tagging and
+publishing. A true fast-forward preserves the SHA; host rebase/squash operations may not. A
+passing CI run of the first two stages on the exact final commit may be cited instead of repeating
+them. Branch protection and review requirements still apply.
 Contributors need only the fast checks, so put those in the contributor guide and link to
 `RELEASING.md` using its repository URL so the link also works from the published package.
