@@ -63,9 +63,11 @@ published package. Add CI only when a runner exists for the repository. Copy the
 the contributor guide and `RELEASING.md`.
 
 Choose any [optional hardening checks](../../ci/rust-library/README.md#optional-hardening-checks)
-the crate needs. Record the verified Miri nightly, target prerequisites, commands, and execution
-frequency in the owned Development section when adopting them; record results before claiming
-coverage.
+the crate needs, including Miri, native 32-bit execution, or
+[WebAssembly](../../ci/rust-library/webassembly.md) builds and execution. Record the verified
+toolchains, target and runtime prerequisites, feature combinations, commands, and execution
+frequency in the owned Development section when adopting them; record results and exclusions
+before claiming coverage.
 
 ## 6. Dependency updates
 
