@@ -16,6 +16,20 @@ contribution policy that requires particular license files, in the component's R
   component READMEs rather than restating them.
 - Wrap prose at 100 columns; leave code, tables, and long URLs intact.
 
+## Issues, pull requests, and labels
+
+Use the bug, proposal, or question prompt, or a blank issue when none fits. For template defects,
+include the source revision, selected component, rendered values relevant to the problem, and a
+small reproduction.
+
+Follow the [shared label catalog](labels/README.md). Give every triaged issue and pull request one
+`Type:` label; proposals without an initial type receive one during triage. This repository's live
+labels use `labels/labels.json.tmpl` directly as their source, without a redundant copied catalog.
+
+Agent-authored PRs submitted from the maintainer's account carry `Needs: Review` and follow the
+[catalog's approval procedure](labels/README.md#needs). That approval must be recorded before the
+label is removed and the PR is merged. External-account PRs use the host's normal review process.
+
 ## Checks before submitting
 
 Run the [catalog checks](scripts/README.md), including the validator's regression tests. CI runs

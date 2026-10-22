@@ -74,3 +74,21 @@ whether earlier contributions need separate agreement.
 License texts are never edited. `LICENSE.tmpl` files and `LICENSE-MIT-0.tmpl` must match the
 canonical texts behind their SPDX identifiers, with only the notice-line placeholders varying. The
 MIT-0 text appears in both license variants; keep the copies identical.
+
+## This repository's adopted components
+
+The template's own contribution guide is owned and retains its MIT-0 contribution terms. Its issue
+and PR prompts were adopted from `1198eefdfcfea89e05fa8279d81c0be48bd1cfc4`:
+
+| Source payload | Destination | Ownership and filled values |
+| --- | --- | --- |
+| `issues/bug-report.md.tmpl` | `.github/ISSUE_TEMPLATE/bug-report.md` | Owned; asks for template component/revision and rendered inputs |
+| `issues/proposal.md.tmpl` | `.github/ISSUE_TEMPLATE/proposal.md` | Owned; initially copied unchanged |
+| `issues/question.md.tmpl` | `.github/ISSUE_TEMPLATE/question.md` | Owned; initially copied unchanged |
+| `contributing/mit-0/pull_request_template.md.tmpl` | `.github/pull_request_template.md` | Filled; `REPO_URL=https://github.com/viell-dev/strata-template` |
+
+The issue chooser explicitly keeps blank issues available. Live labels use
+`labels/labels.json.tmpl` directly; there is no separate `.github/labels.json` to synchronize.
+The [catalog validator](../scripts/README.md), its CI workflow, and the pip/Actions Dependabot
+configuration are repository-owned. This repository has no Cargo package or Rust toolchain to
+update. Its validation workflow runs on PRs and `main` pushes with read-only permissions.
