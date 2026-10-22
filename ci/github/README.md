@@ -8,11 +8,14 @@ the commands identical to the adopting repository's contributor and release inst
 
 | Payload | Destination | Mode | Placeholders |
 | --- | --- | --- | --- |
-| `merge-checks.yml.tmpl` | `.github/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` |
 | `rust-library-merge-checks.yml.tmpl` | `.github/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}` |
 | `rust-library-release-checks.yml.tmpl` | `.github/workflows/release-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{PROJECT_NAME}}` |
 
 ## Generic repository checks
+
+| Payload | Destination | Mode | Placeholders |
+| --- | --- | --- | --- |
+| `merge-checks.yml.tmpl` | `.github/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` |
 
 Copy `merge-checks.yml.tmpl` when the repository has its own verification command, for example
 `python3 scripts/check.py`. Fill the runner label, a reviewed full-SHA checkout action reference,
@@ -26,6 +29,10 @@ result, and a new push cancels the older run for that PR. Adjust the owned timeo
 
 Choose one merge-check payload for a destination workflow, not both. See the
 [documentation guide](../../docs/guides/documentation.md) for one non-Rust use case.
+
+The generic adapter's rendered command has been checked locally with a multiline success case,
+a failing command, and a failing pipeline. Its event and cancellation behavior has not yet been
+exercised on a GitHub runner.
 
 ## Rust library checks
 
@@ -107,10 +114,6 @@ a successful run on the earlier PR head is not enough.
 
 Validate the filled workflows on the adopting repository and runner. Check that each run uses
 the intended SHA and that all documented stages pass before relying on its results.
-
-The generic adapter's rendered command has been checked locally with a multiline success case,
-a failing command, and a failing pipeline. Its event and cancellation behavior has not yet been
-exercised on a GitHub runner.
 
 Metadata selection, extracted-package tests, and fail-fast download behavior have been checked
 locally with positive and negative fixtures. The revised workflow has not yet run on a GitHub
