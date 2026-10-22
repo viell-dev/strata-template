@@ -85,6 +85,20 @@ limits above in either case; those limits do not remove the need to trust the in
   ran blocks a merge that requires it. While a runner is not always online, keep merge checks
   informational rather than required.
 
+## Release metadata
+
+The Rust release workflow also requires Python 3 for its standard-library JSON parser. It uses
+`cargo metadata --no-deps --format-version 1` to read the standalone root package's declared
+minimum compiler, package version, and target directory, independent of TOML formatting. The MSRV
+job first installs the development compiler so Cargo can read the manifest, then installs and
+tests with exactly the declared minimum. A missing `rust-version` fails explicitly.
+
+The package job selects the exact extracted `<name>-<version>` directory reported by Cargo,
+including a configured target directory; older package extracts do not affect selection.
+`{{PROJECT_NAME}}` must match the root package name. Multi-package and virtual workspaces need an
+adopter-owned workflow with explicit package selection; this adapter fails rather than choosing
+an arbitrary workspace member.
+
 ## Verification status
 
 The `rust-library-` pair before the extracted-package all-targets change ran on Codeberg
@@ -96,5 +110,6 @@ and concurrency settings but has not itself run. Event and expression syntax fol
 [Forgejo Actions reference](https://forgejo.org/docs/latest/user/actions/reference/); validate a
 workflow against the actual instance and runner when adopting it.
 
-The updated extracted-package commands have been checked locally; the revised release workflow
-has not yet run on a Forgejo runner.
+Metadata selection, extracted-package tests, and fail-fast download behavior have been checked
+locally with positive and negative fixtures. The revised workflows, including their credential
+and shell settings, have not yet run on a Forgejo runner.

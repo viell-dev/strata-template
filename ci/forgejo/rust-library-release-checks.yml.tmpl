@@ -46,13 +46,24 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
             | sh -s -- -y --profile minimal --default-toolchain none
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
-      - name: Install the rust-version compiler from Cargo.toml
+      - name: Read rust-version with Cargo and install the minimum compiler
         run: |
-          msrv=$(sed -n 's/^rust-version = "\(.*\)"$/\1/p' Cargo.toml)
-          if [ -z "$msrv" ]; then
-            echo "No rust-version found in Cargo.toml" >&2
-            exit 1
-          fi
+          # Cargo from the development toolchain reads the manifest before the MSRV is installed.
+          rustup toolchain install
+          rustc --version
+          msrv=$(cargo metadata --no-deps --format-version 1 | python3 -c '
+          import json, pathlib, sys
+          metadata = json.load(sys.stdin)
+          packages = metadata["packages"]
+          manifest = pathlib.Path("Cargo.toml").resolve()
+          if len(packages) != 1 or pathlib.Path(packages[0]["manifest_path"]).resolve() != manifest:
+              sys.exit("This adapter requires a standalone root Cargo package")
+          package = packages[0]
+          msrv = package.get("rust_version")
+          if not msrv:
+              sys.exit("No package.rust-version declared in Cargo.toml")
+          print(msrv)
+          ')
           rustup toolchain install "$msrv" --profile minimal
           rustc +"$msrv" --version
           echo "msrv=$msrv" >> "$GITHUB_ENV"
@@ -81,6 +92,19 @@ jobs:
       - run: cargo package
       - name: Test the extracted package
         run: |
-          cd target/package/{{PROJECT_NAME}}-*/
+          package_dir=$(cargo metadata --no-deps --format-version 1 | python3 -c '
+          import json, pathlib, sys
+          metadata = json.load(sys.stdin)
+          packages = metadata["packages"]
+          manifest = pathlib.Path("Cargo.toml").resolve()
+          if len(packages) != 1 or pathlib.Path(packages[0]["manifest_path"]).resolve() != manifest:
+              sys.exit("This adapter requires a standalone root Cargo package")
+          package = packages[0]
+          if package["name"] != sys.argv[1]:
+              sys.exit("PROJECT_NAME does not match the root Cargo package")
+          print(pathlib.Path(metadata["target_directory"]) / "package" /
+                "{}-{}".format(package["name"], package["version"]))
+          ' "{{PROJECT_NAME}}")
+          cd "$package_dir" || exit 1
           cargo test --all-targets --all-features
           cargo test --doc --all-features

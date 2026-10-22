@@ -68,10 +68,25 @@ commit and verify the run's head SHA before tagging. If `main` advances before d
 branch at the intended release commit instead. Follow the release procedure's final-commit check;
 a successful run on the earlier PR head is not enough.
 
+## Release metadata
+
+The Rust release workflow also requires Python 3 for its standard-library JSON parser. It uses
+`cargo metadata --no-deps --format-version 1` to read the standalone root package's declared
+minimum compiler, package version, and target directory, independent of TOML formatting. The MSRV
+job first installs the development compiler so Cargo can read the manifest, then installs and
+tests with exactly the declared minimum. A missing `rust-version` fails explicitly.
+
+The package job selects the exact extracted `<name>-<version>` directory reported by Cargo,
+including a configured target directory; older package extracts do not affect selection.
+`{{PROJECT_NAME}}` must match the root package name. Multi-package and virtual workspaces need an
+adopter-owned workflow with explicit package selection; this adapter fails rather than choosing
+an arbitrary workspace member.
+
 ## Verification
 
 Validate the filled workflows on the adopting repository and runner. Check that each run uses
 the intended SHA and that all documented stages pass before relying on its results.
 
-The updated extracted-package all-targets and doctest commands have been checked locally; the
-revised release workflow has not yet run on a GitHub runner.
+Metadata selection, extracted-package tests, and fail-fast download behavior have been checked
+locally with positive and negative fixtures. The revised workflow has not yet run on a GitHub
+runner; local command checks do not establish event or runner behavior.
