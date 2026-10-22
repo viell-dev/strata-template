@@ -13,6 +13,7 @@ For each adopted component, record enough to find its source again:
 | contributing | mpl-2.0-rust | `abc1234` | `CONTRIBUTING.md`, `.github/pull_request_template.md` | Filled; Development owned |
 | issues | `rust-library-bug`, `proposal` | `abc1234` | `.github/ISSUE_TEMPLATE/` | Owned |
 | labels | catalog | `abc1234` | `.github/labels.json` | Verbatim |
+| dependencies | `dependabot-rust-library` | `abc1234` | `.github/dependabot.yml` | Owned |
 
 Add the rendered placeholder values and any deliberate deviation from the source. Keep the note
 wherever the repository keeps its maintainer notes; it does not need to be published. A

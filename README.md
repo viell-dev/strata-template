@@ -1,8 +1,9 @@
 # strata-template
 
 Reusable starting points for Strata repositories: license material, contribution policies, issue
-prompts, a label catalog, and verification recipes. A repository selects the parts it needs,
-copies them, fills in the documented placeholders, and owns the result.
+prompts, a label catalog, dependency update configuration, and verification recipes. A repository
+selects the parts it needs, copies them, fills in the documented placeholders, and owns the
+result.
 
 Strata's core is a Rust parser stack, but the surrounding ecosystem may include editor extensions,
 TypeScript or Python projects, websites, services, and infrastructure tooling. Components are
@@ -17,6 +18,7 @@ license/        License texts and licensing statements      variants: mpl-2.0-ru
 contributing/   Contribution policies and PR prompts        variants: mpl-2.0-rust, mit-0
 issues/         Issue prompts, selected file by file
 labels/         Shared issue and pull request label catalog
+dependencies/   Dependency update configuration             dependabot-rust-library
 ci/             Verification recipes and runner adapters    rust-library, documentation, github, forgejo
 docs/guides/    End-to-end checklists for common repository types
 docs/           maintenance.md: recording selections, applying updates, intended tooling
