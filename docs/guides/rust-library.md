@@ -60,6 +60,11 @@ published package. Add CI only when a runner exists for the repository. Copy the
 `rust-library-` merge-check and release-check workflows, and keep their commands identical to
 the contributor guide and `RELEASING.md`.
 
+Choose any [optional hardening checks](../../ci/rust-library/README.md#optional-hardening-checks)
+the crate needs. Record the verified Miri nightly, target prerequisites, commands, and execution
+frequency in the owned Development section when adopting them; record results before claiming
+coverage.
+
 ## 6. Dependency updates
 
 On GitHub, copy the Dependabot configuration to `.github/dependabot.yml` and enable Dependabot
