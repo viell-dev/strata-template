@@ -11,6 +11,7 @@ authoritative; this guide only orders them and adds the cross-cutting checks.
 | 3 | [issues](../../issues/README.md) | `rust-library-bug`, optionally `proposal` and `question` |
 | 4 | [labels](../../labels/README.md) | catalog |
 | 5 | [ci](../../ci/README.md) | [rust-library](../../ci/rust-library/README.md), optionally [github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) |
+| 6 | [dependencies](../../dependencies/README.md) | `dependabot-rust-library`, on GitHub |
 
 ## 1. License material
 
@@ -59,7 +60,13 @@ published package. Add CI only when a runner exists for the repository. Copy the
 `rust-library-` merge-check and release-check workflows, and keep their commands identical to
 the contributor guide and `RELEASING.md`.
 
-## 6. Check the result
+## 6. Dependency updates
+
+On GitHub, copy the Dependabot configuration to `.github/dependabot.yml` and enable Dependabot
+alerts and security updates. It relies on the merge checks from step 5 to test each proposed
+update, and its README explains the MSRV check that Cargo updates still need before merging.
+
+## 7. Check the result
 
 - No placeholder remains in any copied file; the `${{ … }}` expressions in workflows are not
   placeholders. Relative links in `README.md`, `CONTRIBUTING.md`, and `LICENSE-CLARIFICATION.md`
@@ -73,8 +80,9 @@ the contributor guide and `RELEASING.md`.
   `RELEASING.md`. Run `cargo package`, then `cargo test --all-features` inside
   `target/package/<name>-<version>/`.
 - The live labels match `.github/labels.json`.
+- On GitHub, the Dependabot page lists all three ecosystems without a configuration error.
 
-## 7. Record the selection
+## 8. Record the selection
 
 Note the components, variants, source revision, and rendered values as described in
 [Maintenance](../maintenance.md).

@@ -11,7 +11,9 @@ adopting repository's `CONTRIBUTING.md` and `RELEASING.md`.
 | `rust-library-release-checks.yml.tmpl` | `.github/workflows/release-checks.yml` | Filled, then owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{PROJECT_NAME}}` |
 
 Use a Linux runner label such as `ubuntu-latest` and a reviewed checkout action pinned to its
-full commit hash, such as `actions/checkout@<commit>`. `{{PROJECT_NAME}}` is the Cargo package
+full commit hash, such as `actions/checkout@<commit> # <tag>`. The
+[Dependabot configuration](../../dependencies/README.md) proposes updates to that pin and its
+version comment. `{{PROJECT_NAME}}` is the Cargo package
 name. The `${{ … }}` expressions are GitHub syntax, not template placeholders. The runner needs
 Git, Node.js for the chosen checkout action, curl, and a C linker. Each job installs rustup and
 its required compiler; no cache is configured.
