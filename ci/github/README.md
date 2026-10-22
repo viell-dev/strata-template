@@ -46,6 +46,20 @@ An adopter that needs a pinned bootstrap can use the documented versioned `rustu
 and verify a reviewed checksum in its owned workflows. Keep the permission and secret limits
 above in either case; those limits do not remove the need to trust the installer.
 
+## Release metadata
+
+The Rust release workflow also requires Python 3 for its standard-library JSON parser. It uses
+`cargo metadata --no-deps --format-version 1` to read the standalone root package's declared
+minimum compiler, package version, and target directory, independent of TOML formatting. The MSRV
+job first installs the development compiler so Cargo can read the manifest, then installs and
+tests with exactly the declared minimum. A missing `rust-version` fails explicitly.
+
+The package job selects the exact extracted `<name>-<version>` directory reported by Cargo,
+including a configured target directory; older package extracts do not affect selection.
+`{{PROJECT_NAME}}` must match the root package name. Multi-package and virtual workspaces need an
+adopter-owned workflow with explicit package selection; this adapter fails rather than choosing
+an arbitrary workspace member.
+
 ## Running checks
 
 A new push cancels the previous merge-check run for that pull request. Checks use the PR head,
@@ -67,20 +81,6 @@ creates new commit SHAs. After merging a release PR, dispatch the gate on the re
 commit and verify the run's head SHA before tagging. If `main` advances before dispatch, select a
 branch at the intended release commit instead. Follow the release procedure's final-commit check;
 a successful run on the earlier PR head is not enough.
-
-## Release metadata
-
-The Rust release workflow also requires Python 3 for its standard-library JSON parser. It uses
-`cargo metadata --no-deps --format-version 1` to read the standalone root package's declared
-minimum compiler, package version, and target directory, independent of TOML formatting. The MSRV
-job first installs the development compiler so Cargo can read the manifest, then installs and
-tests with exactly the declared minimum. A missing `rust-version` fails explicitly.
-
-The package job selects the exact extracted `<name>-<version>` directory reported by Cargo,
-including a configured target directory; older package extracts do not affect selection.
-`{{PROJECT_NAME}}` must match the root package name. Multi-package and virtual workspaces need an
-adopter-owned workflow with explicit package selection; this adapter fails rather than choosing
-an arbitrary workspace member.
 
 ## Verification
 
