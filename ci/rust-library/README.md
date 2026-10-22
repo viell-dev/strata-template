@@ -138,6 +138,13 @@ including whether that Cargo version supports cross-target doctests. A compile-o
 not exercise runtime differences such as pointer-width limits, and this target does not establish
 support for other 32-bit platforms.
 
+### WebAssembly
+
+The [WebAssembly recipe](webassembly.md) covers library builds, portable tests in Node.js with
+`wasm-bindgen-test`, and WASI tests in Wasmtime. These are separate checks with different runtime
+contracts; choose the ones the crate supports. They can use `std`, and do not imply `no_std`
+support. The recipe also covers testing a separate Serde deserializer adapter when one exists.
+
 ## Release procedure
 
 | Payload | Destination | Mode | Placeholders |
