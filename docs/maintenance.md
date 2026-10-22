@@ -54,8 +54,10 @@ values, produces reviewable diffs for an explicit list of repositories, reports 
 placeholders, and stops on conflicts. It never commits or publishes.
 
 A repository customized beyond that, with recorded ownership changes or restructured files, is
-outside the tool's automatic update scope and maintains its own checks. That is a valid state, not a defect: the
-tool serves repositories that stay close to the template, and the others own their divergence.
+outside the tool's automatic update scope and maintains its own checks. That is a valid state, not a
+defect: the tool serves repositories that stay close to the template, and the others own their
+divergence.
+
 
 ## Maintaining the source wording
 

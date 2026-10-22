@@ -63,11 +63,13 @@ cargo package
 )
 ```
 
-The listing must contain every repository-local file the packaged README, licensing documents,
-and any packaged changelog link to, plus every test, example, or benchmark meant to ship. If it
-does not, correct the package selection in a new commit and run the gate again. The tests in the extracted copy show that the published source is
-testable as shipped, including its benchmark targets. The separate doctest command is required
-because `--all-targets` does not include documentation tests.
+The listing must contain every repository-local file the packaged README, licensing documents, and
+any packaged changelog link to, plus every test, example, or benchmark meant to ship. If it does
+not, correct the package selection in a new commit and run the gate again. The tests in the
+extracted copy show that the published source is testable as shipped, including its benchmark
+targets. The separate doctest command is required because `--all-targets` does not include
+documentation tests.
+
 
 Report the results in the pull request description: the commit, the host, the compiler versions,
 the test counts per stage, and every ignored test with its reason.
