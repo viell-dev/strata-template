@@ -32,6 +32,10 @@ these owned workflows and the local checks. The payloads do not require a tracke
 | `{{CHECK_COMMAND}}` | Repository-owned verification command, such as `./scripts/check.sh` |
 | `{{PROJECT_NAME}}` | The Cargo package name, which locates the extracted package |
 
+Substitute only the checkout action reference for `{{CHECKOUT_ACTION}}`. An optional version
+comment belongs after the closing YAML quote, not inside the placeholder value. For a multiline
+`{{CHECK_COMMAND}}`, indent every substituted line to the same level as the original placeholder.
+
 The `${{ … }}` expressions in the payloads are Forgejo syntax, not placeholders; keep them.
 
 ## Runner and repository setup

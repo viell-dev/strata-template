@@ -23,3 +23,9 @@ Only the notice line may change; the text must keep matching the `MIT-0` SPDX id
 
 Where the stack has package metadata (Cargo, npm, Python packaging), set its license field to
 `MIT-0`.
+
+## Verification
+
+- No placeholder remains in `LICENSE`; its only difference from the payload is the notice line.
+- The README's License section links to the copied `LICENSE` and describes the repository's scope.
+- Any package metadata uses the same `MIT-0` identifier.
