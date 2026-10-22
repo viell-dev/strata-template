@@ -77,8 +77,8 @@ update, and its README explains the MSRV check that Cargo updates still need bef
   `examples/`, `tests/`, `benches/`) contains no third-party or differently licensed material, or
   each exception is marked as the clarification allows.
 - `cargo package --list` shows every file the README and clarification link to, and not
-  `RELEASING.md`. Run `cargo package`, then `cargo test --all-features` inside
-  `target/package/<name>-<version>/`.
+  `RELEASING.md`. Run `cargo package`, then `cargo test --all-targets --all-features` and
+  `cargo test --doc --all-features` inside `target/package/<name>-<version>/`.
 - The live labels match `.github/labels.json`.
 - On GitHub, the Dependabot page lists all three ecosystems without a configuration error.
 

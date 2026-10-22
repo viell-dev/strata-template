@@ -42,3 +42,6 @@ the new commit. Never treat an older successful run as verification of a newer r
 
 Validate the filled workflows on the adopting repository and runner. Check that each run uses
 the intended SHA and that all documented stages pass before relying on its results.
+
+The updated extracted-package all-targets and doctest commands have been checked locally; the
+revised release workflow has not yet run on a GitHub runner.
