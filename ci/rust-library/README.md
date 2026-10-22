@@ -5,6 +5,35 @@ on the commit being released. Copy the applicable commands into the adopting rep
 contributor guide or check script. The recipe supplies no toolchain file, MSRV policy, license,
 package metadata, or dependency list.
 
+## Lockfile choices
+
+Each adopter chooses whether to track `Cargo.lock` and records that choice in its contributor
+guide. Different choices are valid:
+
+- A tracked lockfile records the dependency resolution used by a checkout. Review its updates
+  with the changes that need them; the adopter chooses when to refresh compatible dependencies.
+- With an untracked lockfile, a clean checkout without one resolves dependencies afresh. Cargo
+  may reuse an existing local lockfile, so ignoring it does not make every command a fresh
+  resolution.
+- An adopter can also prepare and retain a particular lockfile for a verification run without
+  tracking it. Record how to recover that resolution with the run's results.
+
+For verification that must retain a prepared resolution, add `--locked` to dependency-resolving
+Cargo commands such as `clippy`, `test`, `doc`, and `package`, and use the same choice in local
+checks and workflows. It fails if the lockfile is absent or needs updating; prepare the lockfile
+before the check instead of removing the flag to make a failure pass. `cargo fmt` and rustup
+installation commands do not take this flag. Check that the chosen resolution works with every
+compiler used by the recipe, including the declared minimum.
+
+The commands below omit `--locked` so they can be adopted with either policy. Running a locked
+resolution repeatedly and checking newly available compatible dependencies answer different
+questions. To do the latter, deliberately refresh a resolution and run the checks again. Testing
+the extracted package checks the resolution in that copy; do not assume it is identical to the
+checkout's. A library's lockfile also does not fix the resolution used by its consumers.
+
+See Cargo's [lockfile guide](https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html)
+and [`--locked` reference](https://doc.rust-lang.org/cargo/commands/cargo-test.html#manifest-options).
+
 ## Fast checks
 
 Run on every change with the development compiler, the one `rust-toolchain.toml` selects:
