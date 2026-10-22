@@ -8,7 +8,8 @@ Each step links to the component's own instructions, which stay authoritative.
 | 1 | [license](../../license/README.md) | [mit-0](../../license/mit-0/README.md) |
 | 2 | [contributing](../../contributing/README.md) | [mit-0](../../contributing/mit-0/README.md) |
 | 3 | [issues](../../issues/README.md) | `proposal`, optionally a customized `bug-report` |
-| 4 | [ci](../../ci/README.md) | [documentation](../../ci/documentation/README.md) |
+| 4 | [labels](../../labels/README.md) | catalog |
+| 5 | [ci](../../ci/README.md) | [documentation](../../ci/documentation/README.md) |
 
 ## 1. License
 
@@ -30,17 +31,24 @@ The proposal prompt fits questions and suggestions. A bug-report prompt is for r
 problems; adjust its environment question or omit it. Keep an unstructured path for questions
 that fit no form.
 
-## 4. Verification
+## 4. Labels
+
+Copy the label catalog to `.github/labels.json` and sync the live labels as the labels README
+describes. The topic labels about `unsafe` code and semver rarely apply to a documentation
+repository; keep them anyway, so that every repository shares one catalog.
+
+## 5. Verification
 
 Choose from the documentation outline: local links and assets, Markdown style, and external links
 checked separately. Record the commands in the Development section.
 
-## 5. Check the result
+## 6. Check the result
 
 - No `{{` remains in any copied file, and relative links resolve.
 - `LICENSE` differs from its source only on the notice line.
+- The live labels match `.github/labels.json`.
 
-## 6. Record the selection
+## 7. Record the selection
 
 Note the components, variants, source revision, and rendered values as described in
 [Maintenance](../maintenance.md).
