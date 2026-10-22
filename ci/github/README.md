@@ -26,6 +26,17 @@ The workflows request only `contents: read`, discard checkout credentials, and r
 publication secrets. Enable GitHub Actions in the adopting repository. These checks do not
 publish packages, create tags, or merge changes.
 
+### Rustup bootstrap
+
+The payloads deliberately use Rust's
+[standard Unix installer](https://rust-lang.github.io/rustup/installation/other.html) over HTTPS.
+The bootstrap script and installer are not pinned; they are trusted upstream inputs even when
+the checkout action and compiler version are pinned. This choice avoids maintaining a separate
+installer version and checksum in the templates, but does not provide a frozen build environment.
+An adopter that needs a pinned bootstrap can use the documented versioned `rustup-init` download
+and verify a reviewed checksum in its owned workflows. Keep the permission and secret limits
+above in either case; those limits do not remove the need to trust the installer.
+
 ## Running checks
 
 A new push cancels the previous merge-check run for that pull request. Checks use the PR head,
