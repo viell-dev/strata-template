@@ -31,7 +31,8 @@ Development section. Cover at least:
 
 - **Compilers.** `rust-version` in `Cargo.toml` declares the minimum supported Rust version for
   that release; `rust-toolchain.toml` selects the development compiler contributors get by
-  default. The two differ, may differ from other crates, and change independently.
+  default. The two differ, may differ from other crates, and change independently. Include the
+  `rustfmt` and `clippy` components required by the fast checks in contributor setup.
 - **Lints and conventions.** Where lints are configured and any house rules, such as preferring
   `#[expect(lint, reason = "...")]` over `#[allow(lint)]`.
 - **Tests, examples, and benchmarks.** Where each lives, where present, how to run them, and
@@ -61,7 +62,9 @@ script, and link to `RELEASING.md` using its repository URL so the link also wor
 published package. Add CI only when a runner exists for the repository. Copy the
 [github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) adapter's
 `rust-library-` merge-check and release-check workflows, and keep their commands identical to
-the contributor guide and `RELEASING.md`.
+the contributor guide and `RELEASING.md`. Select the supported
+[feature configurations](../../ci/rust-library/README.md#feature-configurations) when the crate has
+features; an all-features pass alone does not establish default-feature coverage.
 
 Choose any [optional hardening checks](../../ci/rust-library/README.md#optional-hardening-checks)
 the crate needs, including Miri, native 32-bit execution, or

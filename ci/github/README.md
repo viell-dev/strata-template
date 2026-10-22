@@ -59,6 +59,12 @@ gh workflow run release-checks.yml --ref release-0-1-3
 Record the run's actual head SHA in the release PR. If that branch changes, rerun the gate on
 the new commit. Never treat an older successful run as verification of a newer release commit.
 
+GitHub's [Rebase and merge](https://docs.github.com/en/pull-requests/reference/pull-request-merges)
+creates new commit SHAs. After merging a release PR, dispatch the gate on the resulting `main`
+commit and verify the run's head SHA before tagging. If `main` advances before dispatch, select a
+branch at the intended release commit instead. Follow the release procedure's final-commit check;
+a successful run on the earlier PR head is not enough.
+
 ## Verification
 
 Validate the filled workflows on the adopting repository and runner. Check that each run uses
