@@ -41,7 +41,7 @@ The `${{ … }}` expressions in the payloads are Forgejo syntax, not placeholder
 ## Runner and repository setup
 
 No runner, label, image, or action reference is chosen for you. The job image must provide
-Node.js and Git for the checkout action. The `rust-library-` payloads also need curl and a C
+Bash, plus Node.js and Git for the checkout action. The `rust-library-` payloads also need curl and a C
 linker: they install rustup in each job, then take the development compiler from
 `rust-toolchain.toml` and the minimum from `rust-version` in `Cargo.toml`. A Debian-based Node.js
 image such as `node:24-bookworm` provides all of these. For `merge-checks.yml.tmpl`, the image or
@@ -49,9 +49,12 @@ the check command must provide the project's tools. Nothing is cached, so each j
 compilers.
 
 Before relying on the workflows, enable Actions in the repository settings and configure the
-runner's isolation. Check jobs should not receive publication credentials or unrelated host
-access. Forgejo holds workflows from fork pull requests by untrusted authors until a maintainer
+runner's isolation. The checkout steps discard Git credentials after fetching. Check jobs should not receive
+publication credentials or unrelated host access. Forgejo holds workflows from fork pull requests by untrusted authors until a maintainer
 approves them.
+
+The workflows explicitly select Bash so a failing command in a pipeline fails the step, including
+an unsuccessful rustup download. Runner provisioning must make Bash available.
 
 ### Rustup bootstrap
 

@@ -4,6 +4,9 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
 jobs:
   checks:
     runs-on: "{{RUNNER_LABEL}}"
@@ -11,6 +14,8 @@ jobs:
     steps:
       - name: Check out source
         uses: "{{CHECKOUT_ACTION}}"
+        with:
+          persist-credentials: false
       - name: Run repository checks
         run: |
           {{CHECK_COMMAND}}
