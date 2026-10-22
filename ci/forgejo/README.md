@@ -65,10 +65,14 @@ approves them.
 
 ## Verification status
 
-The `rust-library-` pair has run on Codeberg (Forgejo 16.0-dev) with Forgejo Runner 13.2.0 and
+The `rust-library-` pair before the extracted-package all-targets change ran on Codeberg
+(Forgejo 16.0-dev) with Forgejo Runner 13.2.0 and
 `node:24-bookworm` jobs, adopted in strata-reader: passing runs of both workflows, an
 intentionally failing commit that failed each release-check job at its own stage, merge checks on
 a pull request, and a run cancelled by a newer push. `merge-checks.yml.tmpl` shares their trigger
 and concurrency settings but has not itself run. Event and expression syntax follow the
 [Forgejo Actions reference](https://forgejo.org/docs/latest/user/actions/reference/); validate a
 workflow against the actual instance and runner when adopting it.
+
+The updated extracted-package commands have been checked locally; the revised release workflow
+has not yet run on a Forgejo runner.

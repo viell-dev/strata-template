@@ -81,4 +81,5 @@ jobs:
       - name: Test the extracted package
         run: |
           cd target/package/{{PROJECT_NAME}}-*/
-          cargo test --all-features
+          cargo test --all-targets --all-features
+          cargo test --doc --all-features

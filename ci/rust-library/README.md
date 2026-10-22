@@ -45,12 +45,17 @@ From a clean checkout, with `git status --porcelain` printing nothing and withou
 ```bash
 cargo package --list
 cargo package
-(cd target/package/<name>-<version> && cargo test --all-features)
+(
+  cd target/package/<name>-<version> &&
+  cargo test --all-targets --all-features &&
+  cargo test --doc --all-features
+)
 ```
 
 Inspect the listing for every file the README and licensing documents link to, and for tests,
 examples, or benchmarks that should ship. Testing the extracted copy confirms the published source
-is testable as shipped.
+is testable as shipped, including its benchmark targets. Keep the separate doctest command here
+too: `--all-targets` does not include documentation tests.
 
 ## Merge and release checks
 
