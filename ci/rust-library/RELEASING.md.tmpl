@@ -22,6 +22,12 @@ nothing; never use `--allow-dirty`. Plain `cargo` uses the development compiler 
 `rust-toolchain.toml` selects. All three stages must pass. If CI has already run the first two
 on this exact commit and passed, cite that run instead of repeating them.
 
+Follow the repository's documented lockfile choice; the recipe explains the
+[options](https://github.com/viell-dev/strata-template/blob/main/ci/rust-library/README.md#lockfile-choices).
+When verifying a prepared resolution, add `--locked` to the dependency-resolving Cargo commands
+below and keep the workflow commands consistent. Each checkout, including the extracted package,
+must already have a usable lockfile. The default commands do not require a tracked lockfile.
+
 ### Fast checks
 
 ```bash

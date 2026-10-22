@@ -21,6 +21,10 @@ calling a script, so keep each workflow identical to the contributor guide and `
 when either changes. Any other repository takes `merge-checks.yml.tmpl`, which runs one
 repository-owned check command; for a multiline command, indent every line under `run: |`.
 
+Apply the recipe's [lockfile choice](../rust-library/README.md#lockfile-choices) consistently in
+these owned workflows and the local checks. The payloads do not require a tracked lockfile or add
+`--locked` automatically.
+
 | Placeholder | Meaning |
 | --- | --- |
 | `{{RUNNER_LABEL}}` | Label served by a runner configured for this repository |

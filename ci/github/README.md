@@ -18,6 +18,10 @@ name. The `${{ … }}` expressions are GitHub syntax, not template placeholders.
 Git, Node.js for the chosen checkout action, curl, and a C linker. Each job installs rustup and
 its required compiler; no cache is configured.
 
+Apply the recipe's [lockfile choice](../rust-library/README.md#lockfile-choices) consistently in
+these owned workflows and the local checks. The payloads do not require a tracked lockfile or add
+`--locked` automatically.
+
 The workflows request only `contents: read`, discard checkout credentials, and receive no
 publication secrets. Enable GitHub Actions in the adopting repository. These checks do not
 publish packages, create tags, or merge changes.
