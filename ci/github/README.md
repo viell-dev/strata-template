@@ -21,7 +21,7 @@ uses: "actions/checkout@<full-commit-hash>" # <tag>
 The [Dependabot configuration](../../dependencies/README.md) proposes updates to that pin and its
 version comment. `{{PROJECT_NAME}}` is the Cargo package
 name. The `${{ … }}` expressions are GitHub syntax, not template placeholders. The runner needs
-Git, Node.js for the chosen checkout action, curl, and a C linker. Each job installs rustup and
+Bash, Git, Node.js for the chosen checkout action, curl, and a C linker. Each job installs rustup and
 its required compiler; no cache is configured.
 
 Apply the recipe's [lockfile choice](../rust-library/README.md#lockfile-choices) consistently in
@@ -31,6 +31,9 @@ these owned workflows and the local checks. The payloads do not require a tracke
 The workflows request only `contents: read`, discard checkout credentials, and receive no
 publication secrets. Enable GitHub Actions in the adopting repository. These checks do not
 publish packages, create tags, or merge changes.
+
+The workflows explicitly select Bash so a failing command in a pipeline fails the step, including
+an unsuccessful rustup download. Runner provisioning must make Bash available.
 
 ### Rustup bootstrap
 

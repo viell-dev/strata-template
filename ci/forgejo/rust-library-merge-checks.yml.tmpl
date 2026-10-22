@@ -7,6 +7,9 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
 jobs:
   fast:
     name: Fast checks
@@ -15,6 +18,8 @@ jobs:
     steps:
       - name: Check out source
         uses: "{{CHECKOUT_ACTION}}"
+        with:
+          persist-credentials: false
       - name: Install rustup
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
