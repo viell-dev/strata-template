@@ -149,7 +149,11 @@ support. The recipe also covers testing a separate Serde deserializer adapter wh
 
 | Payload | Destination | Mode | Placeholders |
 | --- | --- | --- | --- |
-| `RELEASING.md.tmpl` | `RELEASING.md` | Filled | `{{PROJECT_NAME}}` |
+| `RELEASING.md.tmpl` | `RELEASING.md` | Owned | `{{PROJECT_NAME}}` |
+
+Fill the project name, then adapt the owned procedure to the repository's package layout,
+lockfile choice, changelog (if any), and permitted merge method. Keep its verification commands
+aligned with the contributor guide and workflows.
 
 The three stages together, run on the exact commit to be tagged, are the release gate. The
 payload is the maintainers' procedure around it: prepare the release commit in a pull request,

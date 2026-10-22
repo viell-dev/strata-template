@@ -7,8 +7,8 @@ adopting repository's `CONTRIBUTING.md` and `RELEASING.md`.
 
 | Payload | Destination | Mode | Placeholders |
 | --- | --- | --- | --- |
-| `rust-library-merge-checks.yml.tmpl` | `.github/workflows/merge-checks.yml` | Filled, then owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}` |
-| `rust-library-release-checks.yml.tmpl` | `.github/workflows/release-checks.yml` | Filled, then owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{PROJECT_NAME}}` |
+| `rust-library-merge-checks.yml.tmpl` | `.github/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}` |
+| `rust-library-release-checks.yml.tmpl` | `.github/workflows/release-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{PROJECT_NAME}}` |
 
 Use a Linux runner label such as `ubuntu-latest` and a reviewed checkout action pinned to its
 full commit hash. Substitute only `actions/checkout@<commit>` for `{{CHECKOUT_ACTION}}`;

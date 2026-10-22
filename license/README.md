@@ -16,9 +16,9 @@ variant when a concrete project needs one.
 
 ## Rules for every variant
 
-- License texts are _verbatim_ payloads. `LICENSE.tmpl` and `LICENSE-MIT-0.tmpl` must match the
-  canonical texts behind their SPDX identifiers (`MPL-2.0`, `MIT-0`); only the MIT-0 notice line
-  carries placeholders.
+- License texts must match the canonical texts behind their SPDX identifiers (`MPL-2.0`,
+  `MIT-0`). The MPL-2.0 text is _verbatim_; MIT-0 texts are _filled_ only because their notice line
+  carries placeholders. No other license wording changes during adoption.
 - A variant is self-contained: copying its payloads installs everything the license material
   itself links to. Links across variants point only at the matching contribution variant.
 - A variant README has a file table with destination, mode, and placeholders for every payload,

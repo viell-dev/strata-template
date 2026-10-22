@@ -10,9 +10,9 @@ kinds:
 
 | Payload | Destination | Mode | Placeholders |
 | --- | --- | --- | --- |
-| `merge-checks.yml.tmpl` | `.forgejo/workflows/merge-checks.yml` | Filled, then owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` |
-| `rust-library-merge-checks.yml.tmpl` | `.forgejo/workflows/merge-checks.yml` | Filled, then owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}` |
-| `rust-library-release-checks.yml.tmpl` | `.forgejo/workflows/release-checks.yml` | Filled, then owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{PROJECT_NAME}}` |
+| `merge-checks.yml.tmpl` | `.forgejo/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` |
+| `rust-library-merge-checks.yml.tmpl` | `.forgejo/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}` |
+| `rust-library-release-checks.yml.tmpl` | `.forgejo/workflows/release-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{PROJECT_NAME}}` |
 
 A crate that follows the [rust-library](../rust-library/README.md) recipe takes the
 `rust-library-` pair: its merge checks are the recipe's fast checks, and its release checks run

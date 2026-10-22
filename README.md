@@ -44,7 +44,9 @@ list their payloads directly in the concern README.
   - _Owned_: a starting point that the adopting repository maintains. Upstream changes are read
     for ideas, not applied.
 
-  A file can mix modes by section; the table says which sections are owned.
+  Ownership describes how future updates are applied, not whether initial substitution is needed.
+  An owned workflow can still contain placeholders that must be filled during installation. A file
+  can mix modes by section; the table says which sections are owned.
 
 ### Placeholders
 

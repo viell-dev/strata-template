@@ -10,11 +10,18 @@ For each adopted component, record enough to find its source again:
 | Component | Variant | Source revision | Destination | Mode |
 | --- | --- | --- | --- | --- |
 | license | mpl-2.0-rust | `abc1234` | `LICENSE`, `LICENSE-MIT-0`, `LICENSE-CLARIFICATION.md` | Verbatim, MIT-0 filled |
-| contributing | mpl-2.0-rust | `abc1234` | `CONTRIBUTING.md`, `.github/pull_request_template.md` | Filled; Development owned |
+| contributing | mpl-2.0-rust | `abc1234` | `CONTRIBUTING.md`, `.github/pull_request_template.md` | Filled; guide's Development section owned |
+| contributing (alternative) | mit-0 | `abc1234` | `CONTRIBUTING.md`, optional `.github/pull_request_template.md` | Guide's Licensing section filled; remaining guide owned; prompt filled |
 | issues | `rust-library-bug`, `proposal` | `abc1234` | `.github/ISSUE_TEMPLATE/` | Owned |
 | labels | catalog | `abc1234` | `.github/labels.json` | Verbatim |
 | dependencies | `dependabot-rust-library` | `abc1234` | `.github/dependabot.yml` | Owned |
+| ci | rust-library | `abc1234` | `RELEASING.md` | Owned; project name initially substituted |
+| ci | github | `abc1234` | `.github/workflows/merge-checks.yml`, `.github/workflows/release-checks.yml` | Owned; runner and action inputs initially substituted |
 | security | github | `abc1234` | `SECURITY.md` | Filled; Supported versions and Handling reports owned |
+
+These are examples of alternative selections, not a set to install together. Record inserted
+sections, such as a README's License section, by file and heading as well as their source payload.
+Use a full commit ID for durable records; the short revisions above are illustrative.
 
 Add the rendered placeholder values and any deliberate deviation from the source. Keep the note
 wherever the repository keeps its maintainer notes; it does not need to be published. A
@@ -31,7 +38,11 @@ Treat a new template revision as an available update, reviewed per repository:
 3. Rerun the repository's checks, then update the recorded revision.
 
 Stop on conflicts rather than overwriting. A difference in an owned section is a local decision,
-not drift. An unreplaced placeholder or a modified verbatim file is a defect worth fixing.
+not drift. An unreplaced placeholder or an unrecorded change to material still declared verbatim
+or filled is a defect worth fixing. If an adopter deliberately customizes such material, record
+which file or section is now owned and review upstream changes manually for that part. This
+changes the update contract, not any applicable license or contribution obligations; follow the
+scope-change requirements below when those terms are affected.
 
 ## Tooling
 
@@ -42,8 +53,8 @@ owned. Such a tool takes the recorded selection as input, renders filled files f
 values, produces reviewable diffs for an explicit list of repositories, reports leftover
 placeholders, and stops on conflicts. It never commits or publishes.
 
-A repository customized beyond that, with edits to verbatim material or restructured files, is
-outside the tool's scope and maintains its own checks. That is a valid state, not a defect: the
+A repository customized beyond that, with recorded ownership changes or restructured files, is
+outside the tool's automatic update scope and maintains its own checks. That is a valid state, not a defect: the
 tool serves repositories that stay close to the template, and the others own their divergence.
 
 ## Maintaining the source wording
