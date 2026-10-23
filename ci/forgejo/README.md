@@ -12,7 +12,7 @@ kinds:
 | --- | --- | --- | --- |
 | `merge-checks.yml.tmpl` | `.forgejo/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` |
 | `rust-library-merge-checks.yml.tmpl` | `.forgejo/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}` |
-| `rust-library-release-checks.yml.tmpl` | `.forgejo/workflows/release-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{PROJECT_NAME}}` |
+| `rust-library-release-checks.yml.tmpl` | `.forgejo/workflows/release-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{MSRV}}` |
 
 A crate that follows the [rust-library](../rust-library/README.md) recipe takes the
 `rust-library-` pair: its merge checks are the recipe's fast checks, and its release checks run
@@ -30,7 +30,7 @@ these owned workflows and the local checks. The payloads do not require a tracke
 | `{{RUNNER_LABEL}}` | Label served by a runner configured for this repository |
 | `{{CHECKOUT_ACTION}}` | Reviewed, fully qualified checkout action reference pinned to a commit |
 | `{{CHECK_COMMAND}}` | Repository-owned verification command, such as `./scripts/check.sh` |
-| `{{PROJECT_NAME}}` | The Cargo package name, which locates the extracted package |
+| `{{MSRV}}` | The declared minimum Rust version; keep aligned with `Cargo.toml` |
 
 Substitute only the checkout action reference for `{{CHECKOUT_ACTION}}`. An optional version
 comment belongs after the closing YAML quote, not inside the placeholder value. For a multiline
@@ -41,9 +41,9 @@ The `${{ … }}` expressions in the payloads are Forgejo syntax, not placeholder
 ## Runner and repository setup
 
 No runner, label, image, or action reference is chosen for you. The job image must provide
-Bash, plus Node.js and Git for the checkout action. The `rust-library-` payloads also need curl and a C
-linker: they install rustup in each job, then take the development compiler from
-`rust-toolchain.toml` and the minimum from `rust-version` in `Cargo.toml`. A Debian-based Node.js
+Bash, plus Node.js and Git for the checkout action. The `rust-library-` payloads also need curl,
+`mktemp`, and a C linker: they install rustup in each job, take the development compiler from
+`rust-toolchain.toml`, and use the explicitly filled minimum version. A Debian-based Node.js
 image such as `node:24-bookworm` provides all of these. For `merge-checks.yml.tmpl`, the image or
 the check command must provide the project's tools. Nothing is cached, so each job downloads its
 compilers.
@@ -85,19 +85,17 @@ limits above in either case; those limits do not remove the need to trust the in
   ran blocks a merge that requires it. While a runner is not always online, keep merge checks
   informational rather than required.
 
-## Release metadata
+## Release inputs
 
-The Rust release workflow also requires Python 3 for its standard-library JSON parser. It uses
-`cargo metadata --no-deps --format-version 1` to read the standalone root package's declared
-minimum compiler, package version, and target directory, independent of TOML formatting. The MSRV
-job first installs the development compiler so Cargo can read the manifest, then installs and
-tests with exactly the declared minimum. A missing `rust-version` fails explicitly.
+Fill `{{MSRV}}` with the crate's declared `package.rust-version` from `Cargo.toml`. Update the
+workflow value whenever that declaration changes, and confirm they agree when reviewing a release
+or dependency update. The MSRV job installs that compiler directly. It does not parse the manifest
+or require Python; automatic metadata extraction can be added by an adopter that wants it.
 
-The package job selects the exact extracted `<name>-<version>` directory reported by Cargo,
-including a configured target directory; older package extracts do not affect selection.
-`{{PROJECT_NAME}}` must match the root package name. Multi-package and virtual workspaces need an
-adopter-owned workflow with explicit package selection; this adapter fails rather than choosing
-an arbitrary workspace member.
+The package job uses a fresh temporary target directory, requires exactly one extracted package,
+and tests that source before removing the temporary directory. Existing target-directory settings
+and old extracts do not determine which source is tested. The example assumes a standalone library;
+workspaces and other package layouts need repository-owned selection and checks.
 
 ## Verification status
 
@@ -110,6 +108,6 @@ and concurrency settings but has not itself run. Event and expression syntax fol
 [Forgejo Actions reference](https://forgejo.org/docs/latest/user/actions/reference/); validate a
 workflow against the actual instance and runner when adopting it.
 
-Metadata selection, extracted-package tests, and fail-fast download behavior have been checked
-locally with positive and negative fixtures. The revised workflows, including their credential
-and shell settings, have not yet run on a Forgejo runner.
+Explicit compiler selection, fresh-directory package tests, and fail-fast download behavior have
+been checked locally with positive and negative cases. The revised workflows, including their
+credential and shell settings, have not yet run on a Forgejo runner.

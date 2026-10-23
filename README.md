@@ -64,7 +64,7 @@ list their payloads directly in the concern README.
 | `{{DEVELOPMENT}}` | Marks an owned Development section to be written | That repository's actual workflow |
 | `{{SUPPORTED_VERSIONS}}` | Marks an owned security-support section to be written | The adopter's chosen releases or maintained branches |
 | `{{REPORT_HANDLING}}` | Marks an owned report-handling section to be written | The adopter's response expectations and fix announcements |
-| `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` | CI adapter inputs | See [ci/github](ci/github/README.md) and [ci/forgejo](ci/forgejo/README.md) |
+| `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}`, `{{MSRV}}` | CI adapter inputs | See [ci/github](ci/github/README.md) and [ci/forgejo](ci/forgejo/README.md) |
 
 ## Adopting components
 

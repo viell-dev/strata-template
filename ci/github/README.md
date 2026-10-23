@@ -9,7 +9,7 @@ the commands identical to the adopting repository's contributor and release inst
 | Payload | Destination | Mode | Placeholders |
 | --- | --- | --- | --- |
 | `rust-library-merge-checks.yml.tmpl` | `.github/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}` |
-| `rust-library-release-checks.yml.tmpl` | `.github/workflows/release-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{PROJECT_NAME}}` |
+| `rust-library-release-checks.yml.tmpl` | `.github/workflows/release-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{MSRV}}` |
 
 ## Generic repository checks
 
@@ -47,10 +47,9 @@ uses: "actions/checkout@<full-commit-hash>" # <tag>
 ```
 
 The [Dependabot configuration](../../dependencies/README.md) proposes updates to that pin and its
-version comment. `{{PROJECT_NAME}}` is the Cargo package
-name. The `${{ … }}` expressions are GitHub syntax, not template placeholders. The runner needs
-Bash, Git, Node.js for the chosen checkout action, curl, and a C linker. Each job installs rustup and
-its required compiler; no cache is configured.
+version comment. The `${{ … }}` expressions are GitHub syntax, not template placeholders. The
+runner needs Bash, Git, Node.js for the chosen checkout action, curl, `mktemp`, and a C linker.
+Each job installs rustup and its required compiler; no cache is configured.
 
 Apply the recipe's [lockfile choice](../rust-library/README.md#lockfile-choices) consistently in
 these owned workflows and the local checks. The payloads do not require a tracked lockfile or add
@@ -74,19 +73,17 @@ An adopter that needs a pinned bootstrap can use the documented versioned `rustu
 and verify a reviewed checksum in its owned workflows. Keep the permission and secret limits
 above in either case; those limits do not remove the need to trust the installer.
 
-## Release metadata
+## Release inputs
 
-The Rust release workflow also requires Python 3 for its standard-library JSON parser. It uses
-`cargo metadata --no-deps --format-version 1` to read the standalone root package's declared
-minimum compiler, package version, and target directory, independent of TOML formatting. The MSRV
-job first installs the development compiler so Cargo can read the manifest, then installs and
-tests with exactly the declared minimum. A missing `rust-version` fails explicitly.
+Fill `{{MSRV}}` with the crate's declared `package.rust-version` from `Cargo.toml`. Update the
+workflow value whenever that declaration changes, and confirm they agree when reviewing a release
+or dependency update. The MSRV job installs that compiler directly. It does not parse the manifest
+or require Python; automatic metadata extraction can be added by an adopter that wants it.
 
-The package job selects the exact extracted `<name>-<version>` directory reported by Cargo,
-including a configured target directory; older package extracts do not affect selection.
-`{{PROJECT_NAME}}` must match the root package name. Multi-package and virtual workspaces need an
-adopter-owned workflow with explicit package selection; this adapter fails rather than choosing
-an arbitrary workspace member.
+The package job uses a fresh temporary target directory, requires exactly one extracted package,
+and tests that source before removing the temporary directory. Existing target-directory settings
+and old extracts do not determine which source is tested. The example assumes a standalone library;
+workspaces and other package layouts need repository-owned selection and checks.
 
 ## Running checks
 
@@ -115,6 +112,6 @@ a successful run on the earlier PR head is not enough.
 Validate the filled workflows on the adopting repository and runner. Check that each run uses
 the intended SHA and that all documented stages pass before relying on its results.
 
-Metadata selection, extracted-package tests, and fail-fast download behavior have been checked
-locally with positive and negative fixtures. The revised workflow has not yet run on a GitHub
-runner; local command checks do not establish event or runner behavior.
+Explicit compiler selection, fresh-directory package tests, and fail-fast download behavior have
+been checked locally with positive and negative cases. The revised workflow has not yet run on a
+GitHub runner; local command checks do not establish event or runner behavior.
