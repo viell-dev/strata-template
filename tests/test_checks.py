@@ -132,7 +132,7 @@ class CatalogTests(unittest.TestCase):
     def test_mdrefine_host_command_drift_fails(self):
         self.replace(
             "ci/forgejo/mdrefine-merge-checks.yml.tmpl",
-            "mdtools lint --max-warnings 0", "mdtools lint",
+            "mdrefine lint --max-warnings 0", "mdrefine lint",
         )
         self.reject("host workflow commands diverge")
 

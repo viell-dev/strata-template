@@ -22,5 +22,5 @@ jobs:
         with:
           persist-credentials: false
       - run: npm ci --ignore-scripts
-      - run: npx --no-install mdtools lint --max-warnings 0
-      - run: npx --no-install mdtools format --check
+      - run: npx --no-install mdrefine lint --max-warnings 0
+      - run: npx --no-install mdrefine format --check

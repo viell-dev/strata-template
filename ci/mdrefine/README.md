@@ -1,9 +1,9 @@
 # mdrefine Markdown recipe
 
 Lints and formats a repository's Markdown with [mdrefine](https://www.npmjs.com/package/mdrefine).
-Its `mdtools` command reports style findings and rewrites them, reads tables, alerts, and other
-syntax as the hosting forge renders them, and checks local links and their heading fragments. The
-recipe suits the documents of any repository, whatever its main language, and covers the
+It reports style findings and rewrites them, reads tables, alerts, and other syntax as the hosting
+forge renders them, and checks local links and their heading fragments. The recipe suits the
+documents of any repository, whatever its main language, and covers the
 [documentation outline](../documentation/README.md)'s style and local-link checks. External links
 are not checked; keep that check separate.
 
@@ -50,12 +50,12 @@ repositories, and `node_modules/` are skipped already.
    reformatting; see [Versions and updates](#versions-and-updates). Track `package.json`,
    `package-lock.json`, and `mdtools.config.jsonc`.
 3. Reformat the existing documents in a commit of their own. Preview the changes with
-   `npx --no-install mdtools format --diff`, apply them with
-   `npx --no-install mdtools format --write`, and review the result. Filling paragraphs to the
+   `npx --no-install mdrefine format --diff`, apply them with
+   `npx --no-install mdrefine format --write`, and review the result. Filling paragraphs to the
    wrap width usually changes most hand-wrapped prose the first time. Then fix by hand what the
    lint check still reports, such as broken links.
 4. Put the checks below into the contributor guide's Development section or the repository's
-   check script, with `npx --no-install mdtools format --write` as the fix for style findings.
+   check script, with `npx --no-install mdrefine format --write` as the fix for style findings.
 5. In a Rust crate, keep the three files out of the published package. An explicit `include` list
    already leaves them out; otherwise add them to `exclude`.
 6. To run the checks on pull requests, copy the host adapter's `mdrefine-merge-checks.yml.tmpl`:
@@ -67,13 +67,15 @@ From the repository root:
 
 ```bash
 npm ci --ignore-scripts
-npx --no-install mdtools lint --max-warnings 0
-npx --no-install mdtools format --check
+npx --no-install mdrefine lint --max-warnings 0
+npx --no-install mdrefine format --check
 ```
 
 `npm ci` installs exactly the locked versions and fails when the lockfile and manifest disagree.
 `--ignore-scripts` keeps dependency install scripts from running; mdrefine needs none.
-`npx --no-install` runs the installed command and never downloads one.
+`npx --no-install mdrefine` runs the installed mdrefine's command and never downloads anything.
+Invoke it through the package name: the command itself is named `mdtools`, but an unrelated npm
+package has that name, and where mdrefine is not installed, `npx mdtools` fetches that one instead.
 
 `lint` reports problems such as broken links as errors and style findings as warnings;
 `--max-warnings 0` makes both fail. `format --check` writes nothing and fails when any document
@@ -98,7 +100,7 @@ To move to a new release, read its changelog, then run:
 
 ```bash
 npm install --save-dev --save-exact mdrefine@latest
-npx --no-install mdtools format --write
+npx --no-install mdrefine format --write
 ```
 
 Commit the version change together with the reformatting it causes, so that the checks pass on
@@ -125,7 +127,7 @@ pull request once someone else has pushed to it.
 
 ## Verification
 
-- `npm ci --ignore-scripts` succeeds in a clean checkout, and `npx --no-install mdtools --version`
+- `npm ci --ignore-scripts` succeeds in a clean checkout, and `npx --no-install mdrefine --version`
   prints the version recorded in `package.json`.
 - Both checks pass on the reformatted repository and fail after a deliberate defect, such as
   emphasis written as `*text*` or a link to a missing file.
