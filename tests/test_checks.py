@@ -114,6 +114,10 @@ class CatalogTests(unittest.TestCase):
         self.replace("ci/github/rust-library-merge-checks.yml.tmpl", "cargo fmt --check", "cargo fmt")
         self.reject("merge/release fast commands diverge")
 
+    def test_public_mdrefine_manifest_fails(self):
+        self.replace("ci/mdrefine/package.json.tmpl", '"private": true', '"private": false')
+        self.reject("manifest must be private")
+
     def test_mdrefine_version_in_payload_fails(self):
         self.replace(
             "ci/mdrefine/package.json.tmpl",
