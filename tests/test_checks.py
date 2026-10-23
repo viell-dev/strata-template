@@ -136,6 +136,13 @@ class CatalogTests(unittest.TestCase):
         )
         self.reject("host workflow commands diverge")
 
+    def test_mdrefine_run_by_command_name_fails(self):
+        self.replace(
+            "ci/github/mdrefine-merge-checks.yml.tmpl",
+            "npx --no-install mdrefine lint", "npx --no-install mdtools lint",
+        )
+        self.reject("`npx mdtools` can fetch an unrelated package")
+
     def test_mdrefine_command_missing_from_recipe_fails(self):
         for host in ("github", "forgejo"):
             self.replace(

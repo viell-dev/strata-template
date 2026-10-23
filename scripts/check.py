@@ -237,6 +237,13 @@ def check_mdrefine(root, rendered):
         f"{manifest_path}: manifest must not declare dependencies; setup installs the current mdrefine release",
     )
     readme = (root / "ci/mdrefine/README.md").read_text()
+    sources = {Path("ci/mdrefine/README.md"): readme}
+    sources.update((path, rendered[path]) for path in rendered if path.name == "mdrefine-merge-checks.yml.tmpl")
+    for path, text in sources.items():
+        require(
+            not re.search(r"npx(?: --no-install)? mdtools ", text),
+            f"{path}: run mdrefine as `npx --no-install mdrefine`; `npx mdtools` can fetch an unrelated package",
+        )
     config_path = Path("ci/mdrefine/mdtools.config.jsonc.tmpl")
     config = parse_json(rendered[config_path], config_path)
     require(isinstance(config, dict) and config.get("extends"), f"{config_path}: must extend a preset")
