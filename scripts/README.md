@@ -58,5 +58,8 @@ to make a failure pass: first compare the changed text with its canonical source
 it changed. License and contribution scope changes still follow
 [Maintenance](../docs/maintenance.md).
 
-This is source validation, not the proposed component adoption/update tool. It neither writes
-adopted files nor decides how an adopter's owned sections should change.
+Keep these checks focused on defects in this catalog and its rendered examples. They do not inspect
+adopting repositories, enforce a shared layout there, or require copies to match the latest source.
+The checker and its Python dependencies are maintained here and are not adopted with a component.
+Updates to adopted material follow the manual or agent-assisted procedure in
+[Maintenance](../docs/maintenance.md).

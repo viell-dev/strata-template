@@ -23,7 +23,7 @@ selecting MIT-0 does not select a build tool.
 | [security/](security/README.md) | Private vulnerability-reporting policy | `github` |
 | [ci/](ci/README.md) | Verification recipes and runner adapters | `rust-library`, `documentation`, `github`, `forgejo` |
 | [docs/guides/](docs/guides/) | End-to-end adoption checklists | [Rust library](docs/guides/rust-library.md), [documentation repository](docs/guides/documentation.md) |
-| [docs/maintenance.md](docs/maintenance.md) | Selection records and updates | Ownership, source revisions, intended tooling |
+| [docs/maintenance.md](docs/maintenance.md) | Adoption and updates | Ownership, source references, local decisions |
 
 Each concern has a `README.md` describing its available components. Concerns with named variants
 keep each variant's instructions beside its payloads; `issues/`, `labels/`, and `dependencies/`
@@ -48,6 +48,10 @@ list their payloads directly in the concern README.
   Ownership describes how future updates are applied, not whether initial substitution is needed.
   An owned workflow can still contain placeholders that must be filled during installation. A file
   can mix modes by section; the table says which sections are owned.
+
+  These modes guide maintenance by a person or agent. They do not require an updater or a check
+  against the latest template revision. Ordinary instructions and workflows can become owned when
+  adapted; preserve the selected license and contribution terms when doing so.
 
 ### Placeholders
 
