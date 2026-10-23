@@ -36,6 +36,9 @@ jobs:
     name: Minimum supported Rust version
     runs-on: "{{RUNNER_LABEL}}"
     timeout-minutes: 30
+    env:
+      # Set from Cargo.toml's rust-version; update both together.
+      msrv: "{{MSRV}}"
     steps:
       - name: Check out source
         uses: "{{CHECKOUT_ACTION}}"
@@ -46,27 +49,10 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
             | sh -s -- -y --profile minimal --default-toolchain none
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
-      - name: Read rust-version with Cargo and install the minimum compiler
+      - name: Install the minimum compiler
         run: |
-          # Cargo from the development toolchain reads the manifest before the MSRV is installed.
-          rustup toolchain install
-          rustc --version
-          msrv=$(cargo metadata --no-deps --format-version 1 | python3 -c '
-          import json, pathlib, sys
-          metadata = json.load(sys.stdin)
-          packages = metadata["packages"]
-          manifest = pathlib.Path("Cargo.toml").resolve()
-          if len(packages) != 1 or pathlib.Path(packages[0]["manifest_path"]).resolve() != manifest:
-              sys.exit("This adapter requires a standalone root Cargo package")
-          package = packages[0]
-          msrv = package.get("rust_version")
-          if not msrv:
-              sys.exit("No package.rust-version declared in Cargo.toml")
-          print(msrv)
-          ')
           rustup toolchain install "$msrv" --profile minimal
           rustc +"$msrv" --version
-          echo "msrv=$msrv" >> "$GITHUB_ENV"
       - run: cargo +"$msrv" test --all-targets --all-features
       - run: cargo +"$msrv" test --doc --all-features
 
@@ -89,22 +75,17 @@ jobs:
           rustup toolchain install
           rustc --version
       - run: cargo package --list
-      - run: cargo package
-      - name: Test the extracted package
+      - name: Package and test the extracted source
         run: |
-          package_dir=$(cargo metadata --no-deps --format-version 1 | python3 -c '
-          import json, pathlib, sys
-          metadata = json.load(sys.stdin)
-          packages = metadata["packages"]
-          manifest = pathlib.Path("Cargo.toml").resolve()
-          if len(packages) != 1 or pathlib.Path(packages[0]["manifest_path"]).resolve() != manifest:
-              sys.exit("This adapter requires a standalone root Cargo package")
-          package = packages[0]
-          if package["name"] != sys.argv[1]:
-              sys.exit("PROJECT_NAME does not match the root Cargo package")
-          print(pathlib.Path(metadata["target_directory"]) / "package" /
-                "{}-{}".format(package["name"], package["version"]))
-          ' "{{PROJECT_NAME}}")
-          cd "$package_dir" || exit 1
+          package_target=$(mktemp -d)
+          trap 'rm -rf -- "$package_target"' EXIT
+          export CARGO_TARGET_DIR="$package_target"
+          cargo package
+          manifests=("$package_target"/package/*/Cargo.toml)
+          if (( ${#manifests[@]} != 1 )) || [[ ! -f "${manifests[0]}" ]]; then
+            echo "Expected one extracted Cargo package" >&2
+            exit 1
+          fi
+          cd "${manifests[0]%/Cargo.toml}"
           cargo test --all-targets --all-features
           cargo test --doc --all-features

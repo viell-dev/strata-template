@@ -28,6 +28,7 @@ VALUES = {
     "DEVELOPMENT": "Run the repository's documented checks.",
     "SUPPORTED_VERSIONS": "The selected maintained branch receives fixes.",
     "REPORT_HANDLING": "The maintainer coordinates assessment and disclosure with the reporter.",
+    "MSRV": "1.87.0",
     "RUNNER_LABEL": "ubuntu-latest",
     "CHECKOUT_ACTION": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
     "CHECK_COMMAND": 'printf "first check\\n"\n          printf "second check\\n"',
