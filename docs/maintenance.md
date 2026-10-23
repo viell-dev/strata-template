@@ -1,64 +1,42 @@
 # Maintenance
 
-How adopted files relate to their source over time, and how this repository's own wording is
-maintained. Nothing here requires tooling; the conventions are chosen so tooling can follow later.
+Adopting repositories maintain their own copies. A maintainer or agent can compare the relevant
+template revisions and carry over useful changes; there is no planned adoption/update tool.
 
 ## Recording a selection
 
-For each adopted component, record enough to find its source again:
+Keep a short note identifying the selected components and their source revision, using a full
+commit ID or a link pinned to it. Record important local choices and any destination that would
+otherwise be hard to find. For example, a note can say that the MPL/Rust license and contribution
+components came from one revision, while the Development section and CI commands are maintained
+locally. Record different revisions when components were adopted separately.
 
-| Component | Variant | Source revision | Destination | Mode |
-| --- | --- | --- | --- | --- |
-| license | mpl-2.0-rust | `abc1234` | `LICENSE`, `LICENSE-MIT-0`, `LICENSE-CLARIFICATION.md` | Verbatim, MIT-0 filled |
-| contributing | mpl-2.0-rust | `abc1234` | `CONTRIBUTING.md`, `.github/pull_request_template.md` | Filled; guide's Development section owned |
-| contributing (alternative) | mit-0 | `abc1234` | `CONTRIBUTING.md`, optional `.github/pull_request_template.md` | Guide's Licensing section filled; remaining guide owned; prompt filled |
-| issues | `rust-library-bug`, `proposal` | `abc1234` | `.github/ISSUE_TEMPLATE/` | Owned |
-| labels | catalog | `abc1234` | `.github/labels.json` | Verbatim |
-| dependencies | `dependabot-rust-library` | `abc1234` | `.github/dependabot.yml` | Owned |
-| ci | rust-library | `abc1234` | `RELEASING.md` | Owned; project name initially substituted |
-| ci | github | `abc1234` | `.github/workflows/merge-checks.yml`, `.github/workflows/release-checks.yml` | Owned; runner and action inputs initially substituted |
-| security | github | `abc1234` | `SECURITY.md` | Filled; Supported versions and Handling reports owned |
-
-These are examples of alternative selections, not a set to install together. Record inserted
-sections, such as a README's License section, by file and heading as well as their source payload.
-Use a full commit ID for durable records; the short revisions above are illustrative.
-
-Add the rendered placeholder values and any deliberate deviation from the source. Keep the note
-wherever the repository keeps its maintainer notes; it does not need to be published. A
-repository may instead encode the same facts directly in its own checks.
+The note can live in existing maintainer documentation or the adoption commit. There is no required
+format, manifest, or inventory of every inserted section. Record substituted values when they are
+not evident in the adopted copy and would help a later update.
 
 ## Updating adopted files
 
 Treat a new template revision as an available update, reviewed per repository:
 
-1. Diff the selected sources between the recorded revision and the new one.
-2. Apply the diff by mode: replace _verbatim_ files, re-render _filled_ files and diff them
-   against the copy in place, and read the diff of _owned_ material for changes worth carrying
-   over.
-3. Rerun the repository's checks, then update the recorded revision.
+1. Read the changes to the selected components since the recorded revision.
+2. Review replacements for _verbatim_ files and substituted _filled_ text. For _owned_ material,
+   adapt only the changes that help the repository, preserving its local decisions.
+3. Review the resulting diff and run the repository's checks. Record which updates were applied;
+   do not advance a component's revision just because unrelated components changed.
 
-Stop on conflicts rather than overwriting. A difference in an owned section is a local decision,
-not drift. An unreplaced placeholder or an unrecorded change to material still declared verbatim
-or filled is a defect worth fixing. If an adopter deliberately customizes such material, record
-which file or section is now owned and review upstream changes manually for that part. This
-changes the update contract, not any applicable license or contribution obligations; follow the
-scope-change requirements below when those terms are affected.
+Resolve conflicts with the local intent in mind rather than overwriting changes. A newer template
+revision does not by itself make an adopter out of date. Unfilled placeholders and accidental
+changes to canonical text still need correction. When ordinary instructions are deliberately
+adapted, note that they are now owned. This does not change license or contribution obligations;
+follow the scope-change requirements below when those terms are affected.
 
-## Tooling
+## Source validation
 
-The [catalog checker](../scripts/README.md) validates this repository's source and rendered
-fixtures. No adoption/update tool exists yet. The intended one lives in this repository and applies
-or updates selected components against a repository that is compatible with the template: its
-adopted files are verbatim or filled copies, with owned material confined to the sections the file
-tables mark as owned. Such a tool takes the recorded selection as input, renders filled files from
-the recorded values, produces reviewable diffs for an explicit list of repositories, reports
-leftover placeholders, and stops on conflicts. It never commits or publishes.
-
-A repository customized beyond that, with recorded ownership changes or restructured files, is
-outside the tool's automatic update scope and maintains its own checks. That is a valid state, not a
-defect: the tool serves repositories that stay close to the template, and the others own their
-divergence.
-
+The [catalog checker](../scripts/README.md), its tests, and required CI validate this repository's
+source and representative rendered copies. They do not inspect adopters or enforce synchronization.
+Their Python dependencies stay here; copying a component does not copy the validation toolchain.
+Executable workflow payloads document their own runner requirements separately.
 
 ## Maintaining the source wording
 
