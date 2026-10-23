@@ -22,6 +22,8 @@ Use the bug, proposal, or question prompt, or a blank issue when none fits. For 
 include the source revision, selected component, rendered values relevant to the problem, and a
 small reproduction.
 
+Report security-sensitive problems through the private route in [SECURITY.md](SECURITY.md).
+
 Follow the [shared label catalog](labels/README.md). Give every triaged issue and pull request one
 `Type:` label; proposals without an initial type receive one during triage. This repository's live
 labels use `labels/labels.json.tmpl` directly as their source, without a redundant copied catalog.

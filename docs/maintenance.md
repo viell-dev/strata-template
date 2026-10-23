@@ -65,6 +65,11 @@ and PR prompts were adopted from `1198eefdfcfea89e05fa8279d81c0be48bd1cfc4`:
 | `issues/question.md.tmpl` | `.github/ISSUE_TEMPLATE/question.md` | Owned; initially copied unchanged |
 | `contributing/mit-0/pull_request_template.md.tmpl` | `.github/pull_request_template.md` | Filled; `REPO_URL=https://github.com/viell-dev/strata-template` |
 
+The owned [security policy](../SECURITY.md) follows the `security/github` component at
+`1d79a775f4186fb8f12bebec7a37e56d5727dca7`. Its wording was adapted for template defects, fixes on
+`main`, and the maintainer's discretionary report handling, as agreed in
+[issue #31](https://github.com/viell-dev/strata-template/issues/31#issuecomment-6362723540).
+
 The issue chooser explicitly keeps blank issues available. Live labels use
 `labels/labels.json.tmpl` directly; there is no separate `.github/labels.json` to synchronize.
 The [catalog validator](../scripts/README.md), its CI workflow, and the pip/Actions Dependabot
