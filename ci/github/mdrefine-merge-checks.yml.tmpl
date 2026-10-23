@@ -1,0 +1,33 @@
+# Markdown checks: runs the mdrefine recipe's commands from CONTRIBUTING.md on every pull request.
+# Keep the commands identical to CONTRIBUTING.md. A new push to a pull request cancels its older
+# run; the distinct workflow name keeps other merge checks out of that concurrency group.
+name: Markdown checks
+on:
+  pull_request:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  markdown:
+    name: Markdown checks
+    runs-on: "{{RUNNER_LABEL}}"
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: "{{CHECKOUT_ACTION}}"
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Install Node.js
+        uses: "{{SETUP_NODE_ACTION}}"
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts
+      - run: npx --no-install mdtools lint --max-warnings 0
+      - run: npx --no-install mdtools format --check

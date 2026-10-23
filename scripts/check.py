@@ -31,6 +31,7 @@ VALUES = {
     "MSRV": "1.87.0",
     "RUNNER_LABEL": "ubuntu-latest",
     "CHECKOUT_ACTION": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+    "SETUP_NODE_ACTION": "actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
     "CHECK_COMMAND": 'printf "first check\\n"\n          printf "second check\\n"',
 }
 
@@ -219,6 +220,40 @@ def check_licenses(root):
     )
 
 
+def parse_json(text, path):
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError as error:
+        raise CatalogError(f"{path}: invalid JSON; keep payloads free of comments: {error}") from error
+
+
+def check_mdrefine(root, rendered):
+    """Keep the mdrefine pin exact and documented, and the host workflows on the recipe commands."""
+    manifest_path = Path("ci/mdrefine/package.json.tmpl")
+    manifest = parse_json(rendered[manifest_path], manifest_path)
+    require(manifest.get("private") is True, f"{manifest_path}: manifest must be private")
+    version = manifest.get("devDependencies", {}).get("mdrefine")
+    require(
+        isinstance(version, str) and re.fullmatch(r"\d+\.\d+\.\d+", version),
+        f"{manifest_path}: mdrefine must be pinned to an exact version, not {version!r}",
+    )
+    readme = (root / "ci/mdrefine/README.md").read_text()
+    documented = set(re.findall(r"mdrefine[ @](\d+\.\d+\.\d+)", readme))
+    require(documented == {version}, f"ci/mdrefine/README.md documents {sorted(documented)}, not {version}")
+    config_path = Path("ci/mdrefine/mdtools.config.jsonc.tmpl")
+    config = parse_json(rendered[config_path], config_path)
+    require(isinstance(config, dict) and config.get("extends"), f"{config_path}: must extend a preset")
+    commands = {}
+    for host in ("github", "forgejo"):
+        workflow = parse_yaml(rendered[Path(f"ci/{host}/mdrefine-merge-checks.yml.tmpl")], host)
+        commands[host] = [
+            step["run"] for job in workflow["jobs"].values() for step in job["steps"] if "run" in step
+        ]
+    require(commands["github"] == commands["forgejo"], "mdrefine: host workflow commands diverge")
+    for command in commands["github"]:
+        require(f"\n{command}\n" in readme, f"mdrefine: workflow command missing from recipe: {command}")
+
+
 def check_fixture_links(rendered):
     """Install both license/contribution pairs to validate downstream-relative Markdown links."""
     for variant in ("mit-0", "mpl-2.0-rust"):
@@ -274,6 +309,7 @@ def check(root, actionlint=None):
         elif path.parts[:2] == (".github", "ISSUE_TEMPLATE") and path.suffix == ".md":
             check_issue((root / path).read_text(), path, labels)
     check_fixture_links(rendered)
+    check_mdrefine(root, rendered)
     # The separate doctest command is part of the recipe in both hosts, for every fast stage.
     for host in ("github", "forgejo"):
         merge = parse_yaml(rendered[Path(f"ci/{host}/rust-library-merge-checks.yml.tmpl")], host)

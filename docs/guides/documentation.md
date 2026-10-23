@@ -9,7 +9,7 @@ Each step links to the component's own instructions, which stay authoritative.
 | 2 | [contributing](../../contributing/README.md) | [mit-0](../../contributing/mit-0/README.md) |
 | 3 | [issues](../../issues/README.md) | `proposal` and `question`, optionally a customized `bug-report` |
 | 4 | [labels](../../labels/README.md) | catalog |
-| 5 | [ci](../../ci/README.md) | [documentation](../../ci/documentation/README.md), optionally [github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) |
+| 5 | [ci](../../ci/README.md) | [documentation](../../ci/documentation/README.md), optionally [mdrefine](../../ci/mdrefine/README.md) and [github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) |
 | 6 | [security](../../security/README.md), optional | [github](../../security/github/README.md) if this repository receives reports |
 
 ## 1. License
@@ -44,6 +44,9 @@ Choose from the documentation outline: local links and assets, Markdown style, a
 checked separately. Record the commands in the Development section. When a runner is available,
 use the host adapter's generic `merge-checks.yml.tmpl` to run that same command; the runner or
 command must supply the documentation tools. No Rust toolchain is implied.
+
+For Markdown style and local links, the [mdrefine recipe](../../ci/mdrefine/README.md) supplies a
+configuration, pinned commands, and a host workflow of its own.
 
 ## 6. Security reporting, when selected
 

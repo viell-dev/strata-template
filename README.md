@@ -21,7 +21,7 @@ selecting MIT-0 does not select a build tool.
 | [labels/](labels/README.md) | Shared issue and pull request labels | Label catalog |
 | [dependencies/](dependencies/README.md) | Dependency update configuration | `dependabot-rust-library` |
 | [security/](security/README.md) | Private vulnerability-reporting policy | `github` |
-| [ci/](ci/README.md) | Verification recipes and runner adapters | `rust-library`, `documentation`, `github`, `forgejo` |
+| [ci/](ci/README.md) | Verification recipes and runner adapters | `rust-library`, `documentation`, `mdrefine`, `github`, `forgejo` |
 | [docs/guides/](docs/guides/) | End-to-end adoption checklists | [Rust library](docs/guides/rust-library.md), [documentation repository](docs/guides/documentation.md) |
 | [docs/maintenance.md](docs/maintenance.md) | Adoption and updates | Ownership, source references, local decisions |
 
@@ -64,7 +64,7 @@ list their payloads directly in the concern README.
 | `{{DEVELOPMENT}}` | Marks an owned Development section to be written | That repository's actual workflow |
 | `{{SUPPORTED_VERSIONS}}` | Marks an owned security-support section to be written | The adopter's chosen releases or maintained branches |
 | `{{REPORT_HANDLING}}` | Marks an owned report-handling section to be written | The adopter's response expectations and fix announcements |
-| `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}`, `{{MSRV}}` | CI adapter inputs | See [ci/github](ci/github/README.md) and [ci/forgejo](ci/forgejo/README.md) |
+| `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{SETUP_NODE_ACTION}}`, `{{CHECK_COMMAND}}`, `{{MSRV}}` | CI adapter inputs | See [ci/github](ci/github/README.md) and [ci/forgejo](ci/forgejo/README.md) |
 
 ## Adopting components
 

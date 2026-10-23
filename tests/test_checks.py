@@ -114,6 +114,33 @@ class CatalogTests(unittest.TestCase):
         self.replace("ci/github/rust-library-merge-checks.yml.tmpl", "cargo fmt --check", "cargo fmt")
         self.reject("merge/release fast commands diverge")
 
+    def test_mdrefine_version_range_fails(self):
+        self.replace("ci/mdrefine/package.json.tmpl", '"mdrefine": "0.4.0"', '"mdrefine": "^0.4.0"')
+        self.reject("pinned to an exact version")
+
+    def test_undocumented_mdrefine_version_fails(self):
+        self.replace("ci/mdrefine/package.json.tmpl", '"mdrefine": "0.4.0"', '"mdrefine": "0.4.1"')
+        self.reject("documents")
+
+    def test_commented_mdrefine_config_fails(self):
+        self.replace("ci/mdrefine/mdtools.config.jsonc.tmpl", "{\n", "{\n  // Comment\n")
+        self.reject("invalid JSON")
+
+    def test_mdrefine_host_command_drift_fails(self):
+        self.replace(
+            "ci/forgejo/mdrefine-merge-checks.yml.tmpl",
+            "mdtools lint --max-warnings 0", "mdtools lint",
+        )
+        self.reject("host workflow commands diverge")
+
+    def test_mdrefine_command_missing_from_recipe_fails(self):
+        for host in ("github", "forgejo"):
+            self.replace(
+                f"ci/{host}/mdrefine-merge-checks.yml.tmpl",
+                "npm ci --ignore-scripts", "npm ci",
+            )
+        self.reject("workflow command missing from recipe")
+
     def test_unknown_prompt_label_fails(self):
         self.replace("issues/bug-report.md.tmpl", '"Type: Bug"', '"Undefined Label"')
         self.reject("unknown issue labels")

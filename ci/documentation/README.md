@@ -8,6 +8,8 @@ Choose checks appropriate to the repository's actual formats and publishing setu
   apart from broken references.
 - If the project builds a site, exercise its own build and any meaningful navigation checks.
 
-No linter, site generator, package manager, or runtime is selected here. A Markdown-only hub and a
-non-static site need not share a pipeline. Template payloads with downstream-relative links and
-placeholders should be checked as rendered fixtures, not mistaken for broken repository docs.
+No linter, site generator, package manager, or runtime is selected here; the
+[mdrefine recipe](../mdrefine/README.md) is one concrete choice for Markdown style and local links.
+A Markdown-only hub and a non-static site need not share a pipeline. Template payloads with
+downstream-relative links and placeholders should be checked as rendered fixtures, not mistaken
+for broken repository docs.

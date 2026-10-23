@@ -10,7 +10,7 @@ authoritative; this guide only orders them and adds the cross-cutting checks.
 | 2 | [contributing](../../contributing/README.md) | [mpl-2.0-rust](../../contributing/mpl-2.0-rust/README.md) |
 | 3 | [issues](../../issues/README.md) | `rust-library-bug`, optionally `proposal` and `question` |
 | 4 | [labels](../../labels/README.md) | catalog |
-| 5 | [ci](../../ci/README.md) | [rust-library](../../ci/rust-library/README.md), optionally [github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) |
+| 5 | [ci](../../ci/README.md) | [rust-library](../../ci/rust-library/README.md), optionally [mdrefine](../../ci/mdrefine/README.md) and [github](../../ci/github/README.md) or [forgejo](../../ci/forgejo/README.md) |
 | 6 | [dependencies](../../dependencies/README.md) | `dependabot-rust-library`, on GitHub |
 | 7 | [security](../../security/README.md), optional | [github](../../security/github/README.md), after policy decisions |
 
@@ -70,11 +70,15 @@ Use the [optional references](../../ci/rust-library/README.md#optional-hardening
 the crate needs Miri, native 32-bit, or WebAssembly checks. Their setup and support commitments
 belong in the adopter's documentation.
 
+To lint and format the crate's Markdown too, add the [mdrefine recipe](../../ci/mdrefine/README.md)
+and its host workflow, keeping its Node.js files out of the published package as it describes.
+
 ## 6. Dependency updates
 
 On GitHub, copy the Dependabot configuration to `.github/dependabot.yml` and enable Dependabot
 alerts and security updates. It relies on the merge checks from step 5 to test each proposed
-update, and its README explains the MSRV check that Cargo updates still need before merging.
+update, and its README explains the MSRV check that Cargo updates still need before merging. With
+the mdrefine recipe, also add the `npm` entry from its README.
 
 ## 7. Security reporting, when selected
 
@@ -94,9 +98,10 @@ owned contributor guidance or the README, using a repository URL if the file is 
 - The example-material scope in `LICENSE-CLARIFICATION.md` (fenced code in Markdown and rustdoc,
   `examples/`, `tests/`, `benches/`) contains no third-party or differently licensed material, or
   each exception is marked as the clarification allows.
-- `cargo package --list` shows every file the README and clarification link to, and not
-  `RELEASING.md`. Run `cargo package`, then `cargo test --all-targets --all-features` and
-  `cargo test --doc --all-features` inside `target/package/<name>-<version>/`.
+- `cargo package --list` shows every file the README and clarification link to, and neither
+  `RELEASING.md` nor the mdrefine recipe's files, if selected. Run `cargo package`, then
+  `cargo test --all-targets --all-features` and `cargo test --doc --all-features` inside
+  `target/package/<name>-<version>/`.
 - The live labels match `.github/labels.json`.
 - On GitHub, the Dependabot page lists all three ecosystems without a configuration error.
 - If security reporting was selected, its component's verification passes and the rendered

@@ -2,9 +2,11 @@
 
 Workflow payloads that run an adopting repository's checks on GitHub Actions. Choose the generic
 merge-check adapter for an owned command, or the pair for the
-[Rust library recipe](../rust-library/README.md). All merge checks run on the pull request's head
-commit; the Rust release checks run all three stages as separate jobs on manual dispatch. Keep
-the commands identical to the adopting repository's contributor and release instructions.
+[Rust library recipe](../rust-library/README.md). A repository that follows the
+[mdrefine recipe](../mdrefine/README.md) can add its Markdown checks beside either. All merge
+checks run on the pull request's head commit; the Rust release checks run all three stages as
+separate jobs on manual dispatch. Keep the commands identical to the adopting repository's
+contributor and release instructions.
 
 | Payload | Destination | Mode | Placeholders |
 | --- | --- | --- | --- |
@@ -33,6 +35,31 @@ Choose one merge-check payload for a destination workflow, not both. See the
 The generic adapter's rendered command has been checked locally with a multiline success case,
 a failing command, and a failing pipeline. Its event and cancellation behavior has not yet been
 exercised on a GitHub runner.
+
+## Markdown checks
+
+| Payload | Destination | Mode | Placeholders |
+| --- | --- | --- | --- |
+| `mdrefine-merge-checks.yml.tmpl` | `.github/workflows/markdown-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{SETUP_NODE_ACTION}}` |
+
+Copy `mdrefine-merge-checks.yml.tmpl` to run the mdrefine recipe's checks on every pull request.
+It is a separate workflow that can sit beside either merge-check payload. Its distinct name gives
+it a concurrency group of its own, so a new push cancels only its own older run. Fill the runner
+label and checkout action as for the other payloads, and `{{SETUP_NODE_ACTION}}` with a reviewed
+setup-node action pinned to its full commit hash, with any version comment outside the quotes:
+
+```yaml
+uses: "actions/setup-node@<full-commit-hash>" # <tag>
+```
+
+The job installs Node.js 24, an LTS line that meets mdrefine's minimum, with setup-node's package
+cache turned off. Change the owned version when that line nears its end of life or mdrefine raises
+its minimum. The runner needs Bash and Git; `npm ci` downloads the locked packages from the npm
+registry. The workflow runs on pull requests that change no Markdown too, because renaming or
+removing any file can break a link.
+
+The rendered workflow's commands have been run locally on passing and failing fixtures. The
+workflow has not yet run on a GitHub runner.
 
 ## Rust library checks
 

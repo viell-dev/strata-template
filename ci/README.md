@@ -13,15 +13,19 @@ What a repository verifies. Each is a documented command set for one kind of pro
   commit, then tags and publishes.
 - [documentation/](documentation/README.md): an outline for Markdown repositories and sites,
   from which a repository picks the checks its formats need.
+- [mdrefine/](mdrefine/README.md): Markdown linting, formatting, and local link checks for the
+  documents of any repository, with a pinned npm installation.
 
 ## Adapters
 
 How the repository's checks reach a runner:
 
 - [github/](github/README.md): GitHub Actions merge checks for an owned command, plus a Rust
-  library pair with fast merge checks and manually dispatched release checks.
+  library pair with fast merge checks and manually dispatched release checks, and Markdown checks
+  for the mdrefine recipe.
 - [forgejo/](forgejo/README.md): Forgejo Actions workflows for merge checks on every pull request
-  and manually dispatched release checks, including a pair for the rust-library recipe.
+  and manually dispatched release checks, including a pair for the rust-library recipe and
+  Markdown checks for the mdrefine recipe.
 
 Recipes are documentation, not scripts. Put the applicable commands into the repository's
 contributor guide or its own check script, so they run identically with and without CI. A

@@ -11,6 +11,7 @@ kinds:
 | Payload | Destination | Mode | Placeholders |
 | --- | --- | --- | --- |
 | `merge-checks.yml.tmpl` | `.forgejo/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{CHECK_COMMAND}}` |
+| `mdrefine-merge-checks.yml.tmpl` | `.forgejo/workflows/markdown-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}` |
 | `rust-library-merge-checks.yml.tmpl` | `.forgejo/workflows/merge-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}` |
 | `rust-library-release-checks.yml.tmpl` | `.forgejo/workflows/release-checks.yml` | Owned | `{{RUNNER_LABEL}}`, `{{CHECKOUT_ACTION}}`, `{{MSRV}}` |
 
@@ -20,6 +21,8 @@ the recipe's three stages as separate jobs. The pair repeats the recipe's comman
 calling a script, so keep each workflow identical to the contributor guide and `RELEASING.md`
 when either changes. Any other repository takes `merge-checks.yml.tmpl`, which runs one
 repository-owned check command; for a multiline command, indent every line under `run: |`.
+A repository that follows the [mdrefine recipe](../mdrefine/README.md) can add
+[Markdown checks](#markdown-checks) beside either.
 
 Apply the recipe's [lockfile choice](../rust-library/README.md#lockfile-choices) consistently in
 these owned workflows and the local checks. The payloads do not require a tracked lockfile or add
@@ -85,6 +88,15 @@ limits above in either case; those limits do not remove the need to trust the in
   ran blocks a merge that requires it. While a runner is not always online, keep merge checks
   informational rather than required.
 
+## Markdown checks
+
+`mdrefine-merge-checks.yml.tmpl` runs the mdrefine recipe's checks on every pull request. It is a
+separate workflow that can sit beside either merge-check payload. Its distinct name gives it a
+concurrency group of its own, so a new push cancels only its own older run. The job image must
+provide Node.js 22.12 or newer with npm, as `node:24-bookworm` does, and the job needs access to
+the npm registry. The workflow runs on pull requests that change no Markdown too, because renaming
+or removing any file can break a link.
+
 ## Release inputs
 
 Fill `{{MSRV}}` with the crate's declared `package.rust-version` from `Cargo.toml`. Update the
@@ -111,3 +123,6 @@ workflow against the actual instance and runner when adopting it.
 Explicit compiler selection, fresh-directory package tests, and fail-fast download behavior have
 been checked locally with positive and negative cases. The revised workflows, including their
 credential and shell settings, have not yet run on a Forgejo runner.
+
+The commands of `mdrefine-merge-checks.yml.tmpl` have been run locally on passing and failing
+fixtures; the workflow has not yet run on a Forgejo runner.
