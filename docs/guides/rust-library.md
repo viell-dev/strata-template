@@ -66,12 +66,9 @@ the contributor guide and `RELEASING.md`. Select the supported
 [feature configurations](../../ci/rust-library/README.md#feature-configurations) when the crate has
 features; an all-features pass alone does not establish default-feature coverage.
 
-Choose any [optional hardening checks](../../ci/rust-library/README.md#optional-hardening-checks)
-the crate needs, including Miri, native 32-bit execution, or
-[WebAssembly](../../ci/rust-library/webassembly.md) builds and execution. Record the verified
-toolchains, target and runtime prerequisites, feature combinations, commands, and execution
-frequency in the owned Development section when adopting them; record results and exclusions
-before claiming coverage.
+Use the [optional references](../../ci/rust-library/README.md#optional-hardening-checks) only when
+the crate needs Miri, native 32-bit, or WebAssembly checks. Their setup and support commitments
+belong in the adopter's documentation.
 
 ## 6. Dependency updates
 

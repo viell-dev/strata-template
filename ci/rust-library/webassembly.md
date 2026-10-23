@@ -13,7 +13,7 @@ Consult Rust's target documentation before deciding which APIs and tests to supp
 - [`wasm32-wasip1`](https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip1.html) uses WASI
   Preview 1 host interfaces. Running it in Wasmtime does not establish browser compatibility.
 
-Keep the [native 32-bit check](README.md#a-32-bit-target) when that platform is supported. Wasm's
+Keep the [native 32-bit check](optional-checks.md#a-32-bit-target) when that platform is supported. Wasm's
 32-bit pointers do not reproduce native operating-system or concurrency behavior.
 
 ### A future wasm64 check
