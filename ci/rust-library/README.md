@@ -7,32 +7,20 @@ package metadata, or dependency list.
 
 ## Lockfile choices
 
-Each adopter chooses whether to track `Cargo.lock` and records that choice in its contributor
-guide. Different choices are valid:
+Each adopter chooses and documents its lockfile policy. A tracked `Cargo.lock` records a checkout's
+resolution; an untracked one may still be reused locally. A clean checkout without one resolves
+dependencies afresh. A particular verification run can also retain its own recoverable lockfile.
 
-- A tracked lockfile records the dependency resolution used by a checkout. Review its updates
-  with the changes that need them; the adopter chooses when to refresh compatible dependencies.
-- With an untracked lockfile, a clean checkout without one resolves dependencies afresh. Cargo
-  may reuse an existing local lockfile, so ignoring it does not make every command a fresh
-  resolution.
-- An adopter can also prepare and retain a particular lockfile for a verification run without
-  tracking it. Record how to recover that resolution with the run's results.
+To retain a prepared resolution, add `--locked` to dependency-resolving Cargo commands such as
+`clippy`, `test`, `doc`, and `package`, consistently in local instructions and CI. It fails if the
+lockfile is absent or needs updating; prepare a usable resolution for every compiler first.
+`cargo fmt` and rustup commands do not take this flag. The examples omit it to allow either policy.
 
-For verification that must retain a prepared resolution, add `--locked` to dependency-resolving
-Cargo commands such as `clippy`, `test`, `doc`, and `package`, and use the same choice in local
-checks and workflows. It fails if the lockfile is absent or needs updating; prepare the lockfile
-before the check instead of removing the flag to make a failure pass. `cargo fmt` and rustup
-installation commands do not take this flag. Check that the chosen resolution works with every
-compiler used by the recipe, including the declared minimum.
-
-The commands below omit `--locked` so they can be adopted with either policy. Running a locked
-resolution repeatedly and checking newly available compatible dependencies answer different
-questions. To do the latter, deliberately refresh a resolution and run the checks again. Testing
-the extracted package checks the resolution in that copy; do not assume it is identical to the
-checkout's. A library's lockfile also does not fix the resolution used by its consumers.
-
-See Cargo's [lockfile guide](https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html)
-and [`--locked` reference](https://doc.rust-lang.org/cargo/commands/cargo-test.html#manifest-options).
+Testing an existing resolution and deliberately refreshing compatible dependencies answer different
+questions. The extracted package can have a different resolution, and a library's lockfile does
+not constrain its consumers. See Cargo's
+[lockfile guide](https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html) and
+[`--locked` reference](https://doc.rust-lang.org/cargo/commands/cargo-test.html#manifest-options).
 
 ## Fast checks
 
@@ -52,23 +40,16 @@ them explicitly when setting up the compiler.
 
 ### Feature configurations
 
-`--all-features` tests one configuration with every feature enabled. It does not exercise code
-behind `cfg(not(feature = "..."))`; such a path can fail for ordinary default-feature users while
-the all-features run passes. Mutually exclusive features can also make all-features invalid.
-
-When features exist, choose and record the supported configurations in the contributor guide:
+`--all-features` is one configuration. It can miss code behind `cfg(not(feature = "..."))`, and
+mutually exclusive features can make it invalid. Choose meaningful supported configurations:
 
 - Default features, using the test commands without `--all-features`.
-- `--no-default-features`, only if that configuration is supported. It does not itself mean
-  `no_std` support.
-- Relevant `--features <names>` combinations, with or without defaults as appropriate.
-- `--all-features` when enabling everything is a supported configuration.
+- `--no-default-features`, if supported; this does not itself mean `no_std`.
+- Selected `--features <names>` combinations, and `--all-features` when valid.
 
-Apply that selection consistently to the development compiler, declared minimum, and extracted
-package checks, and to relevant Clippy and documentation checks. Keep separate doctests for each
-supported test configuration. The simple commands here suit a crate whose combined features are
-valid; replace or extend them in owned instructions and workflows when that is insufficient.
-There is no requirement to test every possible combination.
+Use that selection in development, MSRV, and extracted-package tests, with separate doctests, and
+in relevant Clippy/documentation checks. The adopter owns the selection; no exhaustive matrix is
+required.
 
 ## Minimum supported Rust version
 
@@ -117,55 +98,23 @@ a `rust-library-` workflow payload for both.
 
 ## Optional hardening checks
 
-Select extra checks when the crate's implementation or supported targets warrant them. Record
-their commands, toolchains, prerequisites, and when to run them in the adopter's Development
-section. These checks do not add a mandatory fourth release stage or run in the supplied workflow
-adapters. An adopter can require selected checks before releases or after relevant implementation
-changes without running them on every pull request.
+These optional references are separate from the normal merge/release checks. Select them when the
+crate needs them, and keep setup, frequency, results, and exclusions in its own documentation.
 
 ### Miri
 
-[Miri](https://github.com/rust-lang/miri#using-miri) interprets tests and can detect undefined
-behavior on the paths they exercise. Choose and record a dated nightly that provides Miri and
-works with the crate, then substitute it below:
-
-```bash
-miri_toolchain=nightly-YYYY-MM-DD
-rustup toolchain install "$miri_toolchain" --profile minimal --component miri --component rust-src
-cargo +"$miri_toolchain" miri setup
-cargo +"$miri_toolchain" miri test --all-features
-```
-
-Record the tested commit, nightly, target, flags, and any skipped tests with their reasons. This
-default test command does not exercise benchmark targets. Miri supports only some platform
-operations, and a passing run does not prove all inputs or thread interleavings correct. A claim
-of Miri coverage should link to the recorded command and result.
+Use [Miri](optional-checks.md#miri) when interpreting the crate's tests can help check unsafe code.
+Choose a compatible dated nightly and record exclusions in the adopting repository.
 
 ### A 32-bit target
 
-For a crate that supports 32-bit Linux, the following runs its targets and doctests using the
-development compiler on an x86-64 Linux host:
-
-```bash
-rustup target add i686-unknown-linux-gnu
-cargo test --all-targets --all-features --target i686-unknown-linux-gnu
-cargo test --doc --all-features --target i686-unknown-linux-gnu
-```
-
-Installing Rust's target standard library is only one prerequisite. The host also needs a linker
-and C libraries for 32-bit GNU/Linux, and must be able to execute the resulting binaries. On
-Debian or Ubuntu, the native multilib setup commonly uses `gcc-multilib` and `libc6-dev-i386`;
-other hosts need their own setup or a suitable runner. Check the output for tests actually run,
-including whether that Cargo version supports cross-target doctests. A compile-only check does
-not exercise runtime differences such as pointer-width limits, and this target does not establish
-support for other 32-bit platforms.
+Use a [native 32-bit check](optional-checks.md#a-32-bit-target) when the crate supports that target.
+The host must supply its linker, libraries, and an execution environment.
 
 ### WebAssembly
 
-The [WebAssembly recipe](webassembly.md) covers library builds, portable tests in Node.js with
-`wasm-bindgen-test`, and WASI tests in Wasmtime. These are separate checks with different runtime
-contracts; choose the ones the crate supports. They can use `std`, and do not imply `no_std`
-support. The recipe also covers testing a separate Serde deserializer adapter when one exists.
+The [WebAssembly reference](webassembly.md) distinguishes library builds, JavaScript tests, and
+WASI execution. Choose only the environments the adopter intends to support.
 
 ## Release procedure
 
@@ -177,13 +126,10 @@ Fill the project name, then adapt the owned procedure to the repository's packag
 lockfile choice, changelog (if any), and permitted merge method. Keep its verification commands
 aligned with the contributor guide and workflows.
 
-The three stages together, run on the exact commit to be tagged, are the release gate. The
-payload is the maintainers' procedure around it: prepare the release commit in a pull request,
-run the gate on its head commit, and report the host, compiler versions, results, and ignored
-tests in the pull request. After the permitted merge operation, compare the resulting commit with
-the gated one. If it changed, rerun all three stages on the resulting commit before tagging and
-publishing. A true fast-forward preserves the SHA; host rebase/squash operations may not. A
-passing CI run of the first two stages on the exact final commit may be cited instead of repeating
-them. Branch protection and review requirements still apply.
-Contributors need only the fast checks, so put those in the contributor guide and link to
-`RELEASING.md` using its repository URL so the link also works from the published package.
+The procedure prepares a release through a PR, checks its head, then verifies the resulting merge
+commit before tagging. If merging changes the SHA, rerun the gate on that final commit; a true
+fast-forward preserves it, while host rebase/squash operations may not. Follow branch protection
+and review requirements. The payload explains when an existing CI result can be reused.
+
+Contributors need the fast checks and a repository-URL link to `RELEASING.md` that also works from
+the published package.
