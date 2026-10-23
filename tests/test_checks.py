@@ -114,13 +114,12 @@ class CatalogTests(unittest.TestCase):
         self.replace("ci/github/rust-library-merge-checks.yml.tmpl", "cargo fmt --check", "cargo fmt")
         self.reject("merge/release fast commands diverge")
 
-    def test_mdrefine_version_range_fails(self):
-        self.replace("ci/mdrefine/package.json.tmpl", '"mdrefine": "0.4.0"', '"mdrefine": "^0.4.0"')
-        self.reject("pinned to an exact version")
-
-    def test_undocumented_mdrefine_version_fails(self):
-        self.replace("ci/mdrefine/package.json.tmpl", '"mdrefine": "0.4.0"', '"mdrefine": "0.4.1"')
-        self.reject("documents")
+    def test_mdrefine_version_in_payload_fails(self):
+        self.replace(
+            "ci/mdrefine/package.json.tmpl",
+            '"private": true\n', '"private": true,\n  "devDependencies": { "mdrefine": "0.4.0" }\n',
+        )
+        self.reject("must not declare dependencies")
 
     def test_commented_mdrefine_config_fails(self):
         self.replace("ci/mdrefine/mdtools.config.jsonc.tmpl", "{\n", "{\n  // Comment\n")

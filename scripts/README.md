@@ -28,8 +28,8 @@ The checker also accepts `--root <checkout>` so a prepared catalog can be checke
   syntax for every rendered shell step.
 - Identical merge/release fast commands and separate all-targets/doctest package checks in the Rust
   adapters.
-- An exact, documented mdrefine version in the recipe's private manifest, a configuration that
-  parses as JSON, and Markdown workflows that run the recipe's documented commands on both hosts.
+- A private mdrefine recipe manifest that leaves the version to setup, a configuration that parses
+  as JSON, and Markdown workflows that run the recipe's documented commands on both hosts.
 
 The tests intentionally break representative inputs and require rejection, as well as checking
 successful rendering. They use disposable directories and do not edit this checkout or adopters.

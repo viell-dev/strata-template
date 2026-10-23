@@ -228,18 +228,15 @@ def parse_json(text, path):
 
 
 def check_mdrefine(root, rendered):
-    """Keep the mdrefine pin exact and documented, and the host workflows on the recipe commands."""
+    """Leave the mdrefine version to setup, and keep the host workflows on the recipe commands."""
     manifest_path = Path("ci/mdrefine/package.json.tmpl")
     manifest = parse_json(rendered[manifest_path], manifest_path)
     require(manifest.get("private") is True, f"{manifest_path}: manifest must be private")
-    version = manifest.get("devDependencies", {}).get("mdrefine")
     require(
-        isinstance(version, str) and re.fullmatch(r"\d+\.\d+\.\d+", version),
-        f"{manifest_path}: mdrefine must be pinned to an exact version, not {version!r}",
+        not {"dependencies", "devDependencies"} & manifest.keys(),
+        f"{manifest_path}: manifest must not declare dependencies; setup installs the current mdrefine release",
     )
     readme = (root / "ci/mdrefine/README.md").read_text()
-    documented = set(re.findall(r"mdrefine[ @](\d+\.\d+\.\d+)", readme))
-    require(documented == {version}, f"ci/mdrefine/README.md documents {sorted(documented)}, not {version}")
     config_path = Path("ci/mdrefine/mdtools.config.jsonc.tmpl")
     config = parse_json(rendered[config_path], config_path)
     require(isinstance(config, dict) and config.get("extends"), f"{config_path}: must extend a preset")

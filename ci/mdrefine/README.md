@@ -37,9 +37,17 @@ repositories, and `node_modules/` are skipped already.
 1. Copy both payloads to the repository root. Fill `{{PROJECT_NAME}}` with a valid npm package
    name, normally the repository name: without a name, `npm install` records the checkout's
    directory name in the lockfile, which differs between clones and worktrees. `private` keeps the
-   manifest from being published. If the repository already has a `package.json`, add the
-   `mdrefine` development dependency to it instead.
-2. Add `node_modules/` to `.gitignore`, run `npm install`, and track `package.json`,
+   manifest from being published. If the repository already has a `package.json`, use that
+   instead.
+2. Add `node_modules/` to `.gitignore`, and install the current release:
+
+   ```bash
+   npm install --save-dev --save-exact mdrefine@latest
+   ```
+
+   This records its exact version in `package.json` and `package-lock.json`. If that release is
+   newer than the one this recipe was last checked with, adapt the configuration to it before
+   reformatting; see [Versions and updates](#versions-and-updates). Track `package.json`,
    `package-lock.json`, and `mdtools.config.jsonc`.
 3. Reformat the existing documents in a commit of their own. Preview the changes with
    `npx --no-install mdtools format --diff`, apply them with
@@ -73,14 +81,23 @@ would change. Both commands exit with `1` for findings and `2` when they cannot 
 
 ## Versions and updates
 
-The manifest pins mdrefine 0.4.0 exactly, the release this recipe was checked with. Before 1.0, a
-minor release may change what formatting produces or what the configuration accepts, and even a
-patch release may format a document differently where an earlier release mishandled it; see
-mdrefine's [versioning policy](https://viell-dev.github.io/slop-markdown-tools/versions.html). The
-exact pin makes each such change an explicit update. Read the release's changelog, then run:
+The recipe names no mdrefine version: setup installs the current release, and the repository pins
+it exactly, so every checkout and runner formats the same way. Before 1.0, a minor release may
+change what formatting produces or what the configuration accepts, and even a patch release may
+format a document differently where an earlier release mishandled it; see mdrefine's
+[versioning policy](https://viell-dev.github.io/slop-markdown-tools/versions.html). The exact pin
+makes each such change an explicit update.
+
+This recipe was last checked with mdrefine 0.4.0. With a later release, read the changelogs since
+then and check the configuration against the current
+[documentation](https://viell-dev.github.io/slop-markdown-tools/): presets, rule names, and the
+options it sets may have changed. Both checks exit with `2` when the configuration names an unknown
+preset, rule, or option, or gives an option a value the release does not accept.
+
+To move to a new release, read its changelog, then run:
 
 ```bash
-npm install --save-dev --save-exact mdrefine@<version>
+npm install --save-dev --save-exact mdrefine@latest
 npx --no-install mdtools format --write
 ```
 
@@ -109,13 +126,14 @@ pull request once someone else has pushed to it.
 ## Verification
 
 - `npm ci --ignore-scripts` succeeds in a clean checkout, and `npx --no-install mdtools --version`
-  prints the pinned version.
+  prints the version recorded in `package.json`.
 - Both checks pass on the reformatted repository and fail after a deliberate defect, such as
   emphasis written as `*text*` or a link to a missing file.
 - `node_modules/` is ignored, and the manifest, lockfile, and configuration are tracked.
 - In a Rust crate, `cargo package --list` shows none of the three files.
 
-The rendered payloads and commands have been checked locally with mdrefine 0.4.0 under Node.js 24
-and 22: a clean install without install scripts, passing checks on formatted documents, failing
-checks for a style defect and a missing link target, and an unchanged lockfile after `npm install`
-in a checkout with a different directory name.
+The rendered payloads, setup install, and commands have been checked locally with mdrefine 0.4.0
+under Node.js 24 and 22: an exact version recorded by setup, a clean install without install
+scripts, passing checks on formatted documents, failing checks for a style defect and a missing link
+target, and an unchanged lockfile after `npm install` in a checkout with a different directory name.
+An unknown preset, rule, or option made both checks exit with `2`.
